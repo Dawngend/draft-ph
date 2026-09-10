@@ -1,0 +1,242 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <style>
+    body { margin: 0; background: #0b0d12; font-family: 'Inter Tight', system-ui, sans-serif; color: #e8ecf5; }
+    a { color: #ff6b35; text-decoration: none; } a:hover { color: #ffa93d; }
+    .eyebrow { font-family: 'Chakra Petch', system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #8892a6; }
+    .clip { clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px)); }
+  </style>
+</helmet>
+
+<div style="width: 1440px; height: 900px; display: flex; flex-direction: column; background: #0b0d12; overflow: hidden;">
+
+  <!-- Top bar -->
+  <div style="display: flex; align-items: center; gap: 32px; height: 60px; padding: 0 28px; border-bottom: 1px solid #252b38; background: #0d1017; flex-shrink: 0;">
+    <div style="display: flex; align-items: baseline; gap: 2px;">
+      <span style="font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.01em; color: #e8ecf5;">DRAFT</span><span style="font-family: 'Chakra Petch', sans-serif; font-weight: 700; font-size: 20px; color: #ff6b35;">.PH</span>
+    </div>
+    <div style="display: flex; gap: 26px; align-items: center;">
+      <span style="font-family: 'Chakra Petch', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #ff6b35; border-bottom: 2px solid #ff6b35; padding-bottom: 20px; margin-bottom: -22px;">Scout</span>
+      <span style="font-family: 'Chakra Petch', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #8892a6;">Leaderboards</span>
+      <span style="font-family: 'Chakra Petch', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #8892a6;">My Team</span>
+      <span style="font-family: 'Chakra Petch', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #8892a6;">Tournaments</span>
+    </div>
+    <div style="flex-grow: 1;"></div>
+    <div style="display: flex; align-items: center; gap: 10px; padding: 5px 12px 5px 5px; border: 1px solid #252b38; background: #141821;">
+      <div style="width: 26px; height: 26px; background: linear-gradient(135deg, #ff6b35, #ffa93d);"></div>
+      <div style="display: flex; flex-direction: column; gap: 1px;">
+        <span style="font-size: 12px; font-weight: 600; line-height: 1;">UP Fighting Maroons</span>
+        <span style="font-size: 10px; color: #8892a6; line-height: 1;">Scout account</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-grow: 1; min-height: 0;">
+
+    <!-- Filter rail -->
+    <div style="width: 252px; flex-shrink: 0; border-right: 1px solid #252b38; background: #0d1017; padding: 22px 20px; display: flex; flex-direction: column; gap: 22px; overflow: hidden;">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <span class="eyebrow">Filters</span>
+        <span style="font-size: 11px; color: #ff6b35;">Reset</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 9px;">
+        <span class="eyebrow" style="color: #6b7590;">Game</span>
+        <div style="display: flex; gap: 7px;">
+          <div style="padding: 7px 12px; background: #ff6b35; color: #0b0d12; font-family: 'Chakra Petch', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em;">VALORANT</div>
+          <div style="padding: 7px 12px; background: #141821; border: 1px solid #252b38; color: #8892a6; font-family: 'Chakra Petch', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.04em;">MLBB</div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 9px;">
+        <span class="eyebrow" style="color: #6b7590;">Role</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+          <div style="padding: 6px 11px; background: rgba(255,107,53,0.12); border: 1px solid #ff6b35; color: #ff6b35; font-size: 12px; font-weight: 500;">Duelist</div>
+          <div style="padding: 6px 11px; background: #141821; border: 1px solid #252b38; color: #8892a6; font-size: 12px;">Sentinel</div>
+          <div style="padding: 6px 11px; background: #141821; border: 1px solid #252b38; color: #8892a6; font-size: 12px;">Initiator</div>
+          <div style="padding: 6px 11px; background: #141821; border: 1px solid #252b38; color: #8892a6; font-size: 12px;">Controller</div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <span class="eyebrow" style="color: #6b7590;">Minimum rank</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #ffa93d;">IMMORTAL 1</span>
+        </div>
+        <div style="height: 4px; background: #252b38; position: relative;">
+          <div style="position: absolute; left: 0; top: 0; height: 4px; width: 74%; background: linear-gradient(90deg, #ff6b35, #ffa93d);"></div>
+          <div style="position: absolute; left: 74%; top: -4px; width: 3px; height: 12px; background: #ffa93d;"></div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 9px;">
+        <span class="eyebrow" style="color: #6b7590;">School</span>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 9px 11px; background: #141821; border: 1px solid #252b38;">
+          <span style="font-size: 12px; color: #e8ecf5;">Metro Manila</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8892a6" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 11px; padding-top: 4px;">
+        <span class="eyebrow" style="color: #6b7590;">Availability</span>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 34px; height: 19px; background: #ff6b35; position: relative; flex-shrink: 0;">
+            <div style="position: absolute; right: 3px; top: 3px; width: 13px; height: 13px; background: #0b0d12;"></div>
+          </div>
+          <span style="font-size: 12px; color: #e8ecf5;">Open to Work only</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 34px; height: 19px; background: #252b38; position: relative; flex-shrink: 0;">
+            <div style="position: absolute; left: 3px; top: 3px; width: 13px; height: 13px; background: #6b7590;"></div>
+          </div>
+          <span style="font-size: 12px; color: #8892a6;">Graduating this year</span>
+        </div>
+      </div>
+
+      <div style="flex-grow: 1;"></div>
+
+      <div style="border-top: 1px solid #252b38; padding-top: 16px; display: flex; flex-direction: column; gap: 6px;">
+        <span class="eyebrow" style="color: #6b7590;">Watchlist</span>
+        <span style="font-family: 'Chakra Petch', sans-serif; font-size: 26px; font-weight: 700; color: #e8ecf5; line-height: 1;">12<span style="font-size: 14px; color: #8892a6; font-weight: 500;"> saved</span></span>
+        <span style="font-size: 11px; color: #3ddad7;">3 improved this week</span>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column;">
+
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; padding: 22px 28px 16px 28px; border-bottom: 1px solid #252b38;">
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <span class="eyebrow">Scout Dashboard</span>
+          <div style="display: flex; align-items: baseline; gap: 9px;">
+            <span style="font-family: 'Chakra Petch', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: -0.015em; line-height: 1;">47 players match</span>
+            <span style="font-size: 13px; color: #8892a6;">ranked by fit with your roster</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 7px; padding: 9px 13px; border: 1px solid #252b38; background: #141821;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8892a6" stroke-width="2"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+            <span style="font-size: 12px; color: #8892a6;">Chemistry</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 7px; padding: 9px 13px; background: rgba(255,107,53,0.12); border: 1px solid #ff6b35;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff6b35" stroke-width="2"><path d="M12 3v18M5 10l7-7 7 7"/></svg>
+            <span style="font-size: 12px; color: #ff6b35; font-weight: 500;">Compare (2)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Column header -->
+      <div style="display: grid; grid-template-columns: 42px 1fr 108px 92px 92px 128px 44px; gap: 16px; align-items: center; padding: 11px 28px; border-bottom: 1px solid #252b38; background: #0d1017;">
+        <span class="eyebrow" style="font-size: 10px;">#</span>
+        <span class="eyebrow" style="font-size: 10px;">Player</span>
+        <span class="eyebrow" style="font-size: 10px;">Rating</span>
+        <span class="eyebrow" style="font-size: 10px;">ACS</span>
+        <span class="eyebrow" style="font-size: 10px;">Win rate</span>
+        <span class="eyebrow" style="font-size: 10px; color: #ff6b35;">Chemistry</span>
+        <span></span>
+      </div>
+
+      <!-- Rows -->
+      <sc-for list="{{rows}}" as="row" hint-placeholder-count="5">
+        <div style="display: grid; grid-template-columns: 42px 1fr 108px 92px 92px 128px 44px; gap: 16px; align-items: center; padding: 15px 28px; border-bottom: 1px solid #1a1f2b; background: {{row.bg}};">
+          <span style="font-family: 'Chakra Petch', sans-serif; font-size: 17px; font-weight: 700; color: {{row.rankColor}};">{{row.rank}}</span>
+
+          <div style="display: flex; align-items: center; gap: 13px; min-width: 0;">
+            <div style="width: 40px; height: 40px; background: {{row.avatar}}; flex-shrink: 0;"></div>
+            <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0;">
+              <div style="display: flex; align-items: center; gap: 7px;">
+                <span style="font-family: 'Chakra Petch', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 0.01em;">{{row.handle}}</span>
+                <sc-if value="{{row.verified}}" hint-placeholder-val="{{true}}">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3ddad7" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                </sc-if>
+              </div>
+              <span style="font-size: 12px; color: #8892a6;">{{row.meta}}</span>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: baseline; gap: 5px;">
+            <span style="font-family: 'Chakra Petch', sans-serif; font-size: 21px; font-weight: 700; color: #ffa93d; line-height: 1;">{{row.rating}}</span>
+            <span style="font-size: 10px; color: #6b7590;">OVR</span>
+          </div>
+
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #e8ecf5;">{{row.acs}}</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #e8ecf5;">{{row.wr}}</span>
+
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div style="display: flex; align-items: baseline; gap: 4px;">
+              <span style="font-family: 'Chakra Petch', sans-serif; font-size: 15px; font-weight: 700; color: {{row.chemColor}}; line-height: 1;">{{row.chem}}</span>
+              <span style="font-size: 10px; color: #6b7590;">fit</span>
+            </div>
+            <div style="height: 3px; background: #252b38; width: 100%;">
+              <div style="height: 3px; width: {{row.chemWidth}}; background: {{row.chemColor}};"></div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="{{row.bookmarkFill}}" stroke="{{row.bookmarkStroke}}" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+          </div>
+        </div>
+      </sc-for>
+
+      <div style="flex-grow: 1;"></div>
+
+      <!-- Selected-for-compare tray -->
+      <div style="display: flex; align-items: center; gap: 18px; padding: 14px 28px; border-top: 1px solid #ff6b35; background: rgba(255,107,53,0.07); flex-shrink: 0;">
+        <span class="eyebrow" style="color: #ff6b35;">Roster simulation</span>
+        <span style="font-size: 13px; color: #e8ecf5;">Add <strong style="color: #ffa93d;">PhantomEdge</strong> as second Duelist</span>
+        <div style="display: flex; gap: 22px; margin-left: auto; align-items: center;">
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-size: 10px; color: #8892a6;">Team chemistry</span>
+            <span style="font-family: 'Chakra Petch', sans-serif; font-size: 15px; font-weight: 700;">89 <span style="color: #3ddad7;">&rarr; 91</span></span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-size: 10px; color: #8892a6;">Projected win rate</span>
+            <span style="font-family: 'Chakra Petch', sans-serif; font-size: 15px; font-weight: 700;">61% <span style="color: #3ddad7;">&rarr; 64%</span></span>
+          </div>
+          <div style="padding: 10px 20px; background: #ff6b35; color: #0b0d12; font-family: 'Chakra Petch', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.05em;">RUN SIMULATION</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const raw = [
+      { rank: '01', handle: 'PhantomEdge', meta: 'UST Tigers · Duelist · Immortal 2', rating: '87.4', acs: '245', wr: '68%', chem: '91', verified: true, saved: true, avatar: 'linear-gradient(135deg, #ff6b35, #b53a12)' },
+      { rank: '02', handle: 'kyzen', meta: 'DLSU Green Blades · Duelist · Immortal 1', rating: '84.1', acs: '231', wr: '64%', chem: '88', verified: true, saved: false, avatar: 'linear-gradient(135deg, #3ddad7, #17706e)' },
+      { rank: '03', handle: 'Reyna.exe', meta: 'ADMU Blue Eagles · Duelist · Immortal 3', rating: '89.2', acs: '258', wr: '71%', chem: '74', verified: true, saved: true, avatar: 'linear-gradient(135deg, #ffa93d, #a86612)' },
+      { rank: '04', handle: 'nullframe', meta: 'FEU Tech Tamaraws · Duelist · Ascendant 3', rating: '79.6', acs: '212', wr: '59%', chem: '72', verified: false, saved: false, avatar: 'linear-gradient(135deg, #6b7590, #333a4a)' },
+      { rank: '05', handle: 'MapuaJett', meta: 'Mapua Cardinals · Duelist · Immortal 1', rating: '82.8', acs: '227', wr: '62%', chem: '69', verified: true, saved: false, avatar: 'linear-gradient(135deg, #e5484d, #8a2226)' }
+    ];
+    return {
+      rows: raw.map((r, i) => {
+        const c = Number(r.chem);
+        const chemColor = c >= 85 ? '#3ddad7' : c >= 75 ? '#ffa93d' : '#8892a6';
+        return {
+          ...r,
+          bg: i === 0 ? 'rgba(255,107,53,0.05)' : 'transparent',
+          rankColor: i === 0 ? '#ff6b35' : '#4d5566',
+          chemColor,
+          chemWidth: c + '%',
+          bookmarkFill: r.saved ? '#ff6b35' : 'none',
+          bookmarkStroke: r.saved ? '#ff6b35' : '#4d5566'
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

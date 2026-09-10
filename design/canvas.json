@@ -1,0 +1,26 @@
+{
+  "artboards": [
+    { "file": "Architecture.dc.html", "x": 0, "y": 0, "w": 1440, "h": 1020, "title": "Solution Architecture" },
+    { "file": "Main.dc.html", "x": 1560, "y": 0, "w": 1440, "h": 900, "title": "Scout Dashboard (core feature)" },
+    { "file": "PlayerCard.dc.html", "x": 3120, "y": 0, "w": 760, "h": 1000, "title": "Player Card" },
+    { "file": "IncidentRuling.dc.html", "x": 0, "y": 1180, "w": 1440, "h": 900, "title": "Incident Ruling Workspace" },
+    { "file": "Leaderboard.dc.html", "x": 1560, "y": 1180, "w": 1440, "h": 900, "title": "Public Leaderboard" }
+  ],
+  "annotations": [
+    {
+      "id": "submission-note",
+      "x": 0,
+      "y": -180,
+      "w": 600,
+      "text": "The Next Gen 2026 · Team Hackatots\nSubmission deadline: Sept 12, 11:59 PM\n\nExport this artboard as PNG for the deck's\n\"Architecture, Useable Assets & Tech Stack\" section."
+    },
+    {
+      "id": "wireframe-note",
+      "x": 1560,
+      "y": -180,
+      "w": 600,
+      "text": "UI Wireframe section.\n\nScout Dashboard is the core feature: it is where\nthe recruitment problem is actually solved.\nPlayer Card and the Ruling Workspace show that\nall three personas are covered."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}
