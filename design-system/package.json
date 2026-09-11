@@ -1,0 +1,12 @@
+{
+  "name": "@draft-ph/design-system",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  }
+}

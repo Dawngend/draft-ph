@@ -1,0 +1,14 @@
+{
+  "name": "draft-ph",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "domains/*",
+    "design-system"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace @draft-ph/portal",
+    "typecheck": "npm run typecheck --workspace @draft-ph/portal"
+  }
+}
