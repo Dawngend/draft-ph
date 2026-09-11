@@ -8,7 +8,10 @@
     "design-system"
   ],
   "scripts": {
+    "dev": "npm run dev --workspace @draft-ph/portal",
+    "dev:portal": "npm run dev --workspace @draft-ph/portal",
     "build": "npm run build --workspace @draft-ph/portal",
+    "start": "npm run start --workspace @draft-ph/portal",
     "typecheck": "npm run typecheck --workspace @draft-ph/portal"
   }
 }

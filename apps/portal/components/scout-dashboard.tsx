@@ -15,8 +15,14 @@ export function ScoutDashboard({ fixture }: { fixture: ScoutFixture }) {
   const [selectedIds, setSelectedIds] = useState(fixture.selectedPlayerIds);
 
   const rowData = useMemo(
-    () => fixture.rows.map((row) => ({ ...row, player: fixture.players.find((player) => player.id === row.playerId)! })),
-    [fixture],
+    () =>
+      fixture.rows
+        .map((row) => ({ ...row, player: fixture.players.find((player) => player.id === row.playerId)! }))
+        .filter(({ player }) => player.game === game)
+        .filter(({ player }) => player.role === role)
+        .filter(({ player }) => (openOnly ? player.openToWork : true))
+        .filter(({ player }) => (graduating ? player.graduating : true)),
+    [fixture, game, role, openOnly, graduating],
   );
   const selectedPlayer = fixture.players.find((player) => selectedIds.includes(player.id));
 
@@ -55,7 +61,13 @@ export function ScoutDashboard({ fixture }: { fixture: ScoutFixture }) {
             <Eyebrow>Game</Eyebrow>
             <div className="chip-row">
               {(["Valorant", "MLBB"] as const).map((value) => (
-                <button className={`choice-chip strong ${game === value ? "selected" : ""}`} onClick={() => setGame(value)} key={value}>{value}</button>
+                <button
+                  className={`choice-chip strong ${game === value ? "selected" : ""}`}
+                  onClick={() => setGame(value)}
+                  disabled={value === "MLBB"}
+                  title={value === "MLBB" ? "MLBB indexing begins Season 5" : undefined}
+                  key={value}
+                >{value}</button>
               ))}
             </div>
           </div>
@@ -89,7 +101,7 @@ export function ScoutDashboard({ fixture }: { fixture: ScoutFixture }) {
 
         <section className="scout-results">
           <div className="results-heading">
-            <div><Eyebrow>Scout Dashboard</Eyebrow><div><strong>{fixture.totalMatches} players match</strong><span>ranked by fit with your roster</span></div></div>
+            <div><Eyebrow>Scout Dashboard</Eyebrow><div><strong>{rowData.length} {rowData.length === 1 ? "player matches" : "players match"}</strong><span>ranked by fit with your roster</span></div></div>
             <div className="results-actions">
               <button><FilterIcon />Chemistry</button>
               <button className="active"><ArrowIcon />Compare ({selectedIds.length})</button>
@@ -112,6 +124,13 @@ export function ScoutDashboard({ fixture }: { fixture: ScoutFixture }) {
                 </div>
               );
             })}
+            {rowData.length === 0 && (
+              <div className="scout-empty">
+                <strong>No players match these filters</strong>
+                <span>Try a different role, or turn off &ldquo;Open to Work only&rdquo;.</span>
+                <button onClick={resetFilters}>Reset filters</button>
+              </div>
+            )}
           </div>
           <div className="results-fill" />
           <div className="compare-tray">
