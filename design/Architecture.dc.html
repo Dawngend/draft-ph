@@ -81,10 +81,10 @@
     <path d="M 828 386 L 960 386" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
     <!-- fastapi -> postgres -->
     <path d="M 1090 452 L 1090 472 L 940 472 L 940 492" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
-    <!-- postgres -> realtime -->
-    <path d="M 1140 560 L 1180 560" stroke="#3ddad7" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#ac)"/>
-    <!-- fastapi -> external -->
-    <path d="M 1176 452 L 1176 700" stroke="#6b7590" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+    <!-- postgres -> realtime, routed above the row so it does not cross Storage -->
+    <path d="M 700 530 L 700 512 L 1224 512 L 1224 530" stroke="#3ddad7" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#ac)"/>
+    <!-- fastapi -> external, routed down the gap between Storage and Realtime -->
+    <path d="M 1084 452 L 1084 736" stroke="#6b7590" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#agy)"/>
   </svg>
 
   <!-- LANE 1 nodes -->
@@ -143,7 +143,7 @@
   <!-- wire labels -->
   <span class="wire" style="position: absolute; left: 268px; top: 292px; color: #ff6b35;">HTTPS / fetch</span>
   <span class="wire" style="position: absolute; left: 568px; top: 304px; color: #ff6b35;">RSC render</span>
-  <span class="wire" style="position: absolute; left: 1250px; top: 386px; color: #3ddad7;">WebSocket subscribe</span>
+  <span class="wire" style="position: absolute; left: 1248px; top: 456px; color: #3ddad7;">WebSocket subscribe</span>
   <span class="wire" style="position: absolute; left: 1098px; top: 292px; color: #ff6b35;">HTTPS · signed batch</span>
   <span class="wire" style="position: absolute; left: 268px; top: 464px; color: #ff6b35;">postgres-js · service role</span>
   <span class="wire" style="position: absolute; left: 408px; top: 478px; color: #ff6b35;">postgres-js · user JWT</span>
@@ -151,8 +151,8 @@
   <span class="wire" style="position: absolute; left: 640px; top: 464px; color: #7c879e;">signed upload</span>
   <span class="wire" style="position: absolute; left: 848px; top: 370px; color: #ff6b35;">REST · internal token</span>
   <span class="wire" style="position: absolute; left: 948px; top: 478px; color: #ff6b35;">asyncpg</span>
-  <span class="wire" style="position: absolute; left: 1128px; top: 566px; color: #3ddad7;">WAL</span>
-  <span class="wire" style="position: absolute; left: 1184px; top: 600px; color: #7c879e;">scheduled adapters</span>
+  <span class="wire" style="position: absolute; left: 900px; top: 496px; color: #3ddad7;">WAL · logical replication</span>
+  <span class="wire" style="position: absolute; left: 1092px; top: 640px; color: #7c879e;">scheduled adapters</span>
 
   <!-- footer: the two flows -->
   <div style="position: absolute; left: 48px; top: 700px; width: 872px; display: flex; gap: 18px;">
