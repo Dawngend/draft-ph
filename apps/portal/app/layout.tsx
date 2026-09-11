@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Chakra_Petch, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { AppShell } from "../components/app-shell";
 
 const chakraPetch = Chakra_Petch({
   subsets: ["latin"],
@@ -29,7 +30,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className={`${chakraPetch.variable} ${interTight.variable} ${jetBrainsMono.variable}`}>
-        {children}
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );

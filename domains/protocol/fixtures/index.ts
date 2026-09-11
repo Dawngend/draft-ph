@@ -123,8 +123,9 @@ const timeline = [
 
 function incident(overrides: Partial<Incident> & Pick<Incident, "id" | "severity" | "title" | "matchId" | "age">): Incident {
   return {
+    status: "open",
     verified: true,
-    timeline,
+    timeline: [...timeline],
     applicableRule: {
       reference: "Section 4.2 · Technical Incidents",
       text: "If an application crash is auto-verified within 60 seconds of the reported time, a restart is granted with a 2-round buffer.",
@@ -140,14 +141,76 @@ export const officiateFixture: OfficiateFixture = {
   event: "PCC Season 4",
   day: "Playoffs Day 2",
   officiator: "Andre · Officiator",
-  openCount: 3,
   medianResponse: "2m 18s",
   matches,
   incidents: [
     incident({ id: "INC-042", severity: "HIGH", title: "Application crash reported by PhantomEdge", matchId: "match-12", age: "00:41" }),
-    incident({ id: "INC-041", severity: "MED", title: "Latency spike 450ms to 1,200ms", matchId: "match-7", age: "04:12" }),
-    incident({ id: "INC-040", severity: "LOW", title: "Manual tech pause requested", matchId: "match-9", age: "11:03" }),
-    incident({ id: "INC-039", severity: "MED", title: "Power interruption, Station 3", matchId: "match-4", age: "26:50" }),
+    incident({
+      id: "INC-041",
+      severity: "MED",
+      title: "Latency spike 450ms to 1,200ms",
+      matchId: "match-7",
+      age: "04:12",
+      timeline: [
+        { time: "14:24:02", label: "Network baseline recorded", source: "TELEMETRY", detail: "ping 24ms · packet loss 0.2% · jitter 5ms", kind: "ok" },
+        { time: "14:26:18", label: "Latency threshold exceeded", source: "AUTO-DETECT", detail: "ping peaked at 1,200ms for 19 seconds", kind: "flag" },
+        { time: "14:26:28", label: "Packet loss confirmed", source: "TELEMETRY", detail: "packet loss 18.4% · station network isolated", kind: "warn" },
+        { time: "14:27:04", label: "Technical pause opened", source: "STAFF", detail: "DLSU Green Blades requested review", kind: "warn" },
+        { time: "14:28:11", label: "Incident assigned", source: "ORGANIZER", detail: "Maria assigned Andre · queue wait 67s", kind: "ok" },
+      ],
+      applicableRule: {
+        reference: "Section 4.4 · Network Degradation",
+        text: "Verified latency above 400ms for more than 10 seconds permits a technical pause and network inspection.",
+      },
+      outcomes: ["Resume after network check", "Replay current round", "Continue, no remedy", "Escalate to head official"],
+      selectedOutcome: "Resume after network check",
+      officiatorNote: "Sustained latency and packet loss were isolated to Station 8. Venue network review is in progress.",
+    }),
+    incident({
+      id: "INC-040",
+      severity: "LOW",
+      title: "Manual tech pause requested",
+      matchId: "match-9",
+      age: "11:03",
+      status: "escalated",
+      verified: false,
+      timeline: [
+        { time: "14:15:09", label: "Manual pause requested", source: "PLAYER", detail: "MapuaJett · category: peripheral issue", kind: "warn" },
+        { time: "14:15:31", label: "Opponent captain acknowledged", source: "STAFF", detail: "UP Fighting Maroons · pause accepted", kind: "ok" },
+        { time: "14:17:06", label: "Peripheral swap recorded", source: "STAFF", detail: "Mouse replaced at Station 2", kind: "ok" },
+        { time: "14:19:42", label: "Verification unavailable", source: "SYSTEM", detail: "No automated device event matched the report", kind: "flag" },
+        { time: "14:20:11", label: "Escalated for review", source: "ORGANIZER", detail: "Manual evidence requires head official review", kind: "warn" },
+      ],
+      applicableRule: {
+        reference: "Section 4.1 · Manual Technical Pauses",
+        text: "A manual pause without automated evidence requires corroboration from both captains or a floor official.",
+      },
+      outcomes: ["Resume match", "Replay current round", "Continue, no remedy", "Forfeit round"],
+      selectedOutcome: "Resume match",
+      officiatorNote: "Both captains confirmed the pause. Automated verification was unavailable for the peripheral swap.",
+    }),
+    incident({
+      id: "INC-039",
+      severity: "MED",
+      title: "Power interruption, Station 3",
+      matchId: "match-4",
+      age: "26:50",
+      status: "resolved",
+      timeline: [
+        { time: "13:57:10", label: "Power loss detected", source: "AUTO-DETECT", detail: "Station 3 heartbeat ended without shutdown signal", kind: "flag" },
+        { time: "13:57:14", label: "Match pause confirmed", source: "STAFF", detail: "Floor official halted Match 4", kind: "warn" },
+        { time: "13:58:22", label: "Venue circuit restored", source: "STAFF", detail: "Power strip replaced and tested", kind: "ok" },
+        { time: "14:01:08", label: "Session integrity confirmed", source: "SYSTEM", detail: "Roster and account checks passed after restart", kind: "ok" },
+        { time: "14:03:19", label: "Ruling authorized", source: "OFFICIATOR", detail: "Replay current round · both teams notified", kind: "ok" },
+      ],
+      applicableRule: {
+        reference: "Section 4.6 · Venue Power Failure",
+        text: "A venue-caused power interruption requires the current round to be replayed after session integrity is restored.",
+      },
+      outcomes: ["Replay current round", "Restart with 2 round buffer", "Continue from pause", "Escalate to head official"],
+      selectedOutcome: "Replay current round",
+      officiatorNote: "Venue power failure was verified. Both teams resumed after account and roster checks passed.",
+    }),
   ],
 };
 
