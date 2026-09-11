@@ -20,6 +20,8 @@ Philippine collegiate esports runs on Facebook groups, Discord screenshots, and 
 | 2. Tournament Integrity | `.edu.ph` school verification, match-window identity checks, cross-league history consolidation | Leagues and schools |
 | 3. Incident Management | Auto-detection, Evidence Timeline, Ruling Workspace, post-event reports | Maria (organizer), Andre (officiator) |
 
+**Live prototype:** https://draft-ph.vercel.app
+
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md), the frontend / backend / database contract
