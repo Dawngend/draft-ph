@@ -17,20 +17,21 @@ Companion to [ARCHITECTURE.md](ARCHITECTURE.md). That file says how the pieces t
 | Components | shadcn/ui, extended | latest | Material UI | Copy-in components we own and restyle, rather than fighting a themed library |
 | Service tier | FastAPI | 0.115.x | Flask, Django | Async by default, Pydantic validation matches the strict JSON contract, automatic OpenAPI for the frontend |
 | Language, service | Python | 3.12 | Node | numpy, pandas, and scikit-learn are the reason this service exists |
-| Desktop agent | Tauri | 2.x | Electron | A 5MB binary instead of 150MB, and a Rust core with the OS-level process and network visibility incident detection needs |
 | Charts | Recharts | 2.x | Chart.js | React-native composition, and it themes from the same tokens as everything else |
+
+There is deliberately **no desktop client** in this list. An in-match companion for automatic incident detection is a product feature we want, and Tauri would be the right tool for it, but it is not a tier of this architecture: it would be a second client posting to the same route handlers. Adding it later moves no boxes, so it stays out of the ideathon scope.
 
 ## 2. Data platform
 
 | Concern | Choice | Reason |
 |---|---|---|
-| Database | Supabase PostgreSQL 16 | Relational, because rosters, matches, incidents, and rulings are all relationships. Row Level Security is the feature that makes the privacy model enforceable. |
-| Auth | Supabase Auth | Email OTP with a `.edu.ph` domain allowlist, which is the school verification requirement handled at the auth layer instead of bolted on later |
-| File storage | Supabase Storage | Evidence screenshots and tournament brackets, with signed URLs and the same RLS policies |
-| Realtime | Supabase Realtime | Postgres logical replication pushed to subscribed clients, so the incident queue updates without polling |
+| Database | Supabase Postgres 16 | Relational, because rosters, matches, incidents, and rulings are all relationships. Row Level Security is what makes the privacy model enforceable in the database rather than in UI checks. |
+| Auth service | GoTrue (Go), inside the Supabase project | The JWT issuer. Email OTP with a `.edu.ph` domain allowlist, which is the school verification requirement handled at the auth layer instead of bolted on later |
+| Object store | Supabase Storage, S3-compatible | Evidence media as objects behind the S3 API with signed URLs. The metadata row stays in Postgres under the same RLS policies, so the bytes and the permissions never drift apart. |
+| Change stream | Supabase Realtime (Phoenix, Elixir) | A separate server process holding a WAL replication slot on Postgres and fanning changes out over WebSocket. This is what makes the incident queue live rather than polled. |
 | Migrations | Supabase CLI, SQL files | Versioned in git, applied by CI, never edited by hand in a dashboard |
 
-One vendor for auth, database, storage, and realtime is a deliberate simplification. Four separate services would each need their own integration during a 24 hour build.
+**These are four processes, not one product.** A Supabase project bundles them behind one dashboard and one billing line, which is the deliberate simplification: one vendor to integrate during a build phase instead of four. But they are separate services with separate protocols, and the architecture treats them that way, because the two decisions that matter (authorization enforced in Postgres, change notification read off the WAL) live in the seams between them.
 
 ## 3. Infrastructure
 

@@ -12,12 +12,13 @@
     body { margin: 0; background: #0b0d12; font-family: 'Inter Tight', system-ui, sans-serif; color: #e8ecf5; }
     a { color: #ff6b35; text-decoration: none; } a:hover { color: #ffa93d; }
     .eyebrow { font-family: 'Chakra Petch', system-ui, sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #8892a6; }
-    .node { background: #141821; border: 1px solid #303849; padding: 13px 15px; display: flex; flex-direction: column; gap: 4px; }
+    .node { box-sizing: border-box; background: #141821; border: 1px solid #303849; padding: 13px 15px; display: flex; flex-direction: column; gap: 4px; }
     .node-title { font-family: 'Chakra Petch', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0.01em; color: #e8ecf5; }
+    .node-runtime { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.04em; text-transform: uppercase; color: #9aa6bd; }
     .node-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #7c879e; line-height: 1.5; }
-    .lane { position: absolute; border: 1px dashed #252b38; }
+    .lane { position: absolute; border: 1px dashed #252b38; box-sizing: border-box; }
     .lane-label { position: absolute; font-family: 'Chakra Petch', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
-    .wire { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.02em; }
+    .wire { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.02em; white-space: nowrap; }
   </style>
 </helmet>
 
@@ -35,24 +36,39 @@
     <span style="font-family: 'Chakra Petch', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.05em; color: #e8ecf5;">TEAM HACKATOTS</span>
     <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #7c879e;">The Next Gen 2026</span>
   </div>
+  <span style="position: absolute; left: 48px; top: 118px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #5d6678; letter-spacing: 0.03em;">Every box is a separately deployed process or managed service. Every line is a real protocol. Product features are named in the two flows at the bottom, not in the boxes.</span>
 
   <!-- lanes -->
-  <div class="lane" style="left: 48px; top: 148px; width: 1344px; height: 132px;"></div>
-  <span class="lane-label" style="left: 60px; top: 158px; color: #4d5566;">1 · Clients</span>
+  <div class="lane" style="left: 48px; top: 156px; width: 1004px; height: 128px;"></div>
+  <span class="lane-label" style="left: 60px; top: 165px; color: #4d5566;">1 · Client</span>
 
-  <div class="lane" style="left: 48px; top: 320px; width: 872px; height: 132px;"></div>
+  <div class="lane" style="left: 48px; top: 320px; width: 1004px; height: 132px;"></div>
   <span class="lane-label" style="left: 60px; top: 330px; color: #4d5566;">2 · Application tier · Vercel</span>
 
-  <div class="lane" style="left: 960px; top: 320px; width: 432px; height: 132px;"></div>
-  <span class="lane-label" style="left: 972px; top: 330px; color: #4d5566;">3 · Specialist service</span>
+  <div class="lane" style="left: 1076px; top: 320px; width: 316px; height: 132px;"></div>
+  <span class="lane-label" style="left: 1088px; top: 330px; color: #4d5566;">3 · Model service · Fly.io</span>
 
-  <div class="lane" style="left: 48px; top: 492px; width: 1344px; height: 168px;"></div>
-  <span class="lane-label" style="left: 60px; top: 502px; color: #4d5566;">4 · Data platform · Supabase</span>
+  <div class="lane" style="left: 48px; top: 492px; width: 1004px; height: 180px;"></div>
+  <span class="lane-label" style="left: 60px; top: 502px; color: #4d5566;">4 · Managed backend · Supabase project</span>
 
-  <div class="lane" style="left: 960px; top: 700px; width: 432px; height: 120px;"></div>
-  <span class="lane-label" style="left: 972px; top: 710px; color: #4d5566;">5 · External sources</span>
+  <div class="lane" style="left: 1076px; top: 700px; width: 316px; height: 124px;"></div>
+  <span class="lane-label" style="left: 1088px; top: 710px; color: #4d5566;">5 · External systems</span>
 
-  <!-- wires -->
+  <!--
+    Wire geometry. Every node is border-box, so these x values are real edges.
+      lane 1  Web app          300 .. 800     y 192 .. 275
+      lane 2  Route Handlers    92 .. 512     y 358 .. 441
+              RSC              560 .. 960     y 358 .. 441
+      lane 3  Model service   1092 .. 1376    y 358 .. 441
+      lane 4  GoTrue            92 .. 250     y 530 .. 628
+              Storage API      274 .. 444     y 530 .. 628
+              PostgreSQL       468 .. 824     y 530 .. 628
+              Realtime         872 .. 1042    y 530 .. 628
+      lane 5  Stat providers  1092 .. 1376    y 736 .. 819
+    Every connector starts and ends on a node edge. The single crossing is the
+    Realtime push riser over the asyncpg run at (1064, 470): different colour,
+    different dash, perpendicular.
+  -->
   <svg width="1440" height="1020" style="position: absolute; left: 0; top: 0; pointer-events: none;">
     <defs>
       <marker id="ao" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#ff6b35"/></marker>
@@ -60,123 +76,127 @@
       <marker id="agy" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#6b7590"/></marker>
     </defs>
 
-    <!-- web -> route handlers -->
-    <path d="M 260 280 L 260 320" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
-    <!-- web -> RSC -->
-    <path d="M 360 280 L 360 300 L 560 300 L 560 320" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
-    <!-- web -> realtime (long right) -->
-    <path d="M 430 280 L 430 296 L 1240 296 L 1240 492" stroke="#3ddad7" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#ac)"/>
-    <!-- agent -> fastapi -->
-    <path d="M 1090 280 L 1090 320" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
+    <!-- web app -> route handlers -->
+    <path d="M 360 275 L 360 358" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
+    <!-- web app -> react server components -->
+    <path d="M 620 275 L 620 358" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
 
+    <!-- react server components -> model service -->
+    <path d="M 960 399 L 1092 399" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
+
+    <!-- route handlers -> gotrue -->
+    <path d="M 170 441 L 170 530" stroke="#6b7590" stroke-width="1.6" fill="none" marker-end="url(#agy)"/>
+    <!-- route handlers -> storage api -->
+    <path d="M 350 441 L 350 530" stroke="#6b7590" stroke-width="1.6" fill="none" marker-end="url(#agy)"/>
     <!-- route handlers -> postgres -->
-    <path d="M 260 452 L 260 492" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
-    <!-- RSC -> postgres -->
-    <path d="M 560 452 L 560 472 L 400 472 L 400 492" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
-    <!-- route handlers -> auth -->
-    <path d="M 150 452 L 150 492" stroke="#6b7590" stroke-width="1.6" fill="none" marker-end="url(#agy)"/>
-    <!-- RSC/handlers -> storage -->
-    <path d="M 700 452 L 700 492" stroke="#6b7590" stroke-width="1.6" fill="none" marker-end="url(#agy)"/>
-    <!-- route handlers -> fastapi -->
-    <path d="M 828 386 L 960 386" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
-    <!-- fastapi -> postgres -->
-    <path d="M 1090 452 L 1090 472 L 940 472 L 940 492" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
-    <!-- postgres -> realtime, routed above the row so it does not cross Storage -->
-    <path d="M 700 530 L 700 512 L 1224 512 L 1224 530" stroke="#3ddad7" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#ac)"/>
-    <!-- fastapi -> external, routed down the gap between Storage and Realtime -->
-    <path d="M 1084 452 L 1084 736" stroke="#6b7590" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#agy)"/>
+    <path d="M 490 441 L 490 530" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
+    <!-- react server components -> postgres -->
+    <path d="M 700 441 L 700 530" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
+
+    <!-- model service -> postgres -->
+    <path d="M 1160 441 L 1160 470 L 790 470 L 790 530" stroke="#ff6b35" stroke-width="1.6" fill="none" marker-end="url(#ao)"/>
+    <!-- postgres -> realtime, edge to edge across the gap -->
+    <path d="M 824 586 L 872 586" stroke="#3ddad7" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#ac)"/>
+    <!-- realtime -> web app, up the free channel between lane 4 and lane 3 -->
+    <path d="M 957 530 L 957 512 L 1064 512 L 1064 300 L 760 300 L 760 275" stroke="#3ddad7" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#ac)"/>
+    <!-- model service -> stat providers -->
+    <path d="M 1300 441 L 1300 736" stroke="#6b7590" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#agy)"/>
   </svg>
 
-  <!-- LANE 1 nodes -->
-  <div class="node" style="position: absolute; left: 92px; top: 186px; width: 300px; border-left: 3px solid #ff6b35;">
+  <!-- LANE 1 -->
+  <div class="node" style="position: absolute; left: 300px; top: 192px; width: 500px; border-left: 3px solid #ff6b35;">
     <span class="node-title">Web app</span>
-    <span class="node-sub">Next.js 15 · React 19 · TypeScript · Tailwind<br>players · scouts · organizers · officiators</span>
-  </div>
-  <div class="node" style="position: absolute; left: 960px; top: 186px; width: 300px; border-left: 3px solid #ff6b35;">
-    <span class="node-title">Match Companion</span>
-    <span class="node-sub">Tauri desktop agent · Rust core<br>match-window telemetry only, consent-gated</span>
+    <span class="node-runtime">Browser · PWA</span>
+    <span class="node-sub">Next.js 15 · React 19 · TypeScript · Tailwind</span>
   </div>
 
-  <!-- LANE 2 nodes -->
-  <div class="node" style="position: absolute; left: 92px; top: 358px; width: 300px; border-left: 3px solid #ffa93d;">
+  <!-- LANE 2 -->
+  <div class="node" style="position: absolute; left: 92px; top: 358px; width: 420px; border-left: 3px solid #ffa93d;">
     <span class="node-title">Route Handlers</span>
-    <span class="node-sub">/api/* · serverless functions<br>writes, mutations, service-role reads</span>
+    <span class="node-runtime">Node 22 · Vercel Function</span>
+    <span class="node-sub">/api/* · writes, mutations, service-role reads</span>
   </div>
-  <div class="node" style="position: absolute; left: 440px; top: 358px; width: 300px; border-left: 3px solid #ffa93d;">
+  <div class="node" style="position: absolute; left: 560px; top: 358px; width: 400px; border-left: 3px solid #ffa93d;">
     <span class="node-title">React Server Components</span>
-    <span class="node-sub">server-side reads with the user's JWT<br>streamed HTML, no client data fetch</span>
+    <span class="node-runtime">Node 22 · Vercel Function</span>
+    <span class="node-sub">server-rendered reads, streamed HTML</span>
   </div>
 
-  <!-- LANE 3 node -->
-  <div class="node" style="position: absolute; left: 1004px; top: 358px; width: 300px; border-left: 3px solid #ffa93d;">
-    <span class="node-title">Chemistry + Telemetry</span>
-    <span class="node-sub">FastAPI · Python 3.12 · numpy, pandas<br>weighted model · anomaly detection</span>
+  <!-- LANE 3 -->
+  <div class="node" style="position: absolute; left: 1092px; top: 358px; width: 284px; border-left: 3px solid #ffa93d;">
+    <span class="node-title">Model service</span>
+    <span class="node-runtime">Python 3.12 · FastAPI · uvicorn</span>
+    <span class="node-sub">long-lived container · numpy, pandas</span>
   </div>
 
-  <!-- LANE 4 nodes -->
-  <div class="node" style="position: absolute; left: 92px; top: 530px; width: 232px; border-left: 3px solid #3ddad7;">
-    <span class="node-title">Supabase Auth</span>
-    <span class="node-sub">email OTP<br>.edu.ph allowlist</span>
+  <!-- LANE 4 -->
+  <div class="node" style="position: absolute; left: 92px; top: 530px; width: 158px; border-left: 3px solid #3ddad7;">
+    <span class="node-title">Auth</span>
+    <span class="node-runtime">GoTrue · Go</span>
+    <span class="node-sub">JWT issuer<br>email OTP<br>.edu.ph allowlist</span>
   </div>
-  <div class="node" style="position: absolute; left: 356px; top: 530px; width: 448px; border-left: 3px solid #3ddad7; background: #171d29;">
-    <div style="display: flex; align-items: center; justify-content: space-between;">
-      <span class="node-title">PostgreSQL 16</span>
-      <span style="font-family: 'Chakra Petch', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.11em; padding: 3px 8px; background: rgba(61,218,215,0.13); color: #3ddad7;">SOURCE OF TRUTH</span>
-    </div>
-    <span class="node-sub">Row Level Security is the authorization boundary<br>profiles · player_cards · teams · matches · incidents<br>evidence_events (append-only) · rulings (immutable)</span>
-  </div>
-  <div class="node" style="position: absolute; left: 836px; top: 530px; width: 232px; border-left: 3px solid #3ddad7;">
+  <div class="node" style="position: absolute; left: 274px; top: 530px; width: 170px; border-left: 3px solid #3ddad7;">
     <span class="node-title">Storage</span>
-    <span class="node-sub">evidence media<br>signed URLs, same RLS</span>
+    <span class="node-runtime">S3-compatible · Node</span>
+    <span class="node-sub">object store<br>S3 API + signed URLs<br>rows stay in Postgres</span>
   </div>
-  <div class="node" style="position: absolute; left: 1100px; top: 530px; width: 248px; border-left: 3px solid #3ddad7;">
+  <div class="node" style="position: absolute; left: 468px; top: 530px; width: 356px; border-left: 3px solid #3ddad7; background: #171d29;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+      <span class="node-title">PostgreSQL 16</span>
+      <span style="font-family: 'Chakra Petch', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.11em; padding: 3px 8px; background: rgba(61,218,215,0.13); color: #3ddad7; white-space: nowrap;">SOURCE OF TRUTH</span>
+    </div>
+    <span class="node-runtime">Postgres 16 · Row Level Security</span>
+    <span class="node-sub">profiles · player_cards · teams · matches<br>incidents · evidence_events (append-only)<br>rulings (immutable)</span>
+  </div>
+  <div class="node" style="position: absolute; left: 872px; top: 530px; width: 170px; border-left: 3px solid #3ddad7;">
     <span class="node-title">Realtime</span>
-    <span class="node-sub">logical replication<br>incident queue push</span>
+    <span class="node-runtime">Phoenix · Elixir</span>
+    <span class="node-sub">WAL replication slot<br>WebSocket fan-out<br>no polling</span>
   </div>
 
-  <!-- LANE 5 node -->
-  <div class="node" style="position: absolute; left: 1004px; top: 736px; width: 344px; border-left: 3px solid #6b7590;">
+  <!-- LANE 5 -->
+  <div class="node" style="position: absolute; left: 1092px; top: 736px; width: 284px; border-left: 3px solid #6b7590;">
     <span class="node-title">Stat providers</span>
-    <span class="node-sub">op.gg · Tracker.gg · OpenDota · Dotabuff<br>rate limited, cached, manual-entry fallback</span>
+    <span class="node-runtime">Third-party HTTP APIs</span>
+    <span class="node-sub">op.gg · Tracker.gg · OpenDota · Dotabuff</span>
   </div>
 
-  <!-- wire labels -->
-  <span class="wire" style="position: absolute; left: 268px; top: 292px; color: #ff6b35;">HTTPS / fetch</span>
-  <span class="wire" style="position: absolute; left: 568px; top: 304px; color: #ff6b35;">RSC render</span>
-  <span class="wire" style="position: absolute; left: 1248px; top: 456px; color: #3ddad7;">WebSocket subscribe</span>
-  <span class="wire" style="position: absolute; left: 1100px; top: 304px; color: #ff6b35;">HTTPS · signed batch</span>
-  <span class="wire" style="position: absolute; left: 268px; top: 464px; color: #ff6b35;">postgres-js · service role</span>
-  <span class="wire" style="position: absolute; left: 408px; top: 478px; color: #ff6b35;">postgres-js · user JWT</span>
-  <span class="wire" style="position: absolute; left: 92px; top: 464px; color: #7c879e;">JWT verify</span>
-  <span class="wire" style="position: absolute; left: 640px; top: 464px; color: #7c879e;">signed upload</span>
-  <span class="wire" style="position: absolute; left: 848px; top: 370px; color: #ff6b35;">REST · internal token</span>
-  <span class="wire" style="position: absolute; left: 948px; top: 478px; color: #ff6b35;">asyncpg</span>
-  <span class="wire" style="position: absolute; left: 900px; top: 496px; color: #3ddad7;">WAL · logical replication</span>
-  <span class="wire" style="position: absolute; left: 1092px; top: 640px; color: #7c879e;">scheduled adapters</span>
+  <!-- wire labels: none sits on a line -->
+  <span class="wire" style="left: 368px; top: 304px; color: #ff6b35;">HTTPS · fetch</span>
+  <span class="wire" style="left: 628px; top: 304px; color: #ff6b35;">HTTPS · RSC payload</span>
+  <span class="wire" style="left: 800px; top: 284px; color: #3ddad7;">WebSocket · wss</span>
+  <span class="wire" style="left: 963px; top: 368px; color: #ff6b35;">HTTP · internal token</span>
+  <span class="wire" style="left: 178px; top: 464px; color: #7c879e;">HTTP · verify JWT</span>
+  <span class="wire" style="left: 358px; top: 464px; color: #7c879e;">S3 · signed PUT</span>
+  <span class="wire" style="left: 498px; top: 464px; color: #ff6b35;">service role</span>
+  <span class="wire" style="left: 708px; top: 464px; color: #ff6b35;">user JWT</span>
+  <span class="wire" style="left: 798px; top: 500px; color: #ff6b35;">asyncpg</span>
+  <span class="wire" style="left: 832px; top: 566px; color: #3ddad7;">WAL</span>
+  <span class="wire" style="left: 1310px; top: 600px; color: #7c879e;">HTTPS · cron</span>
 
-  <!-- footer: the two flows -->
-  <div style="position: absolute; left: 48px; top: 700px; width: 872px; display: flex; gap: 18px;">
-    <div style="flex-grow: 1; border: 1px solid #252b38; background: #0f131b; padding: 16px 18px; display: flex; flex-direction: column; gap: 9px;">
+  <!-- footer: the two flows. product features live here, not in the boxes -->
+  <div style="position: absolute; left: 48px; top: 700px; width: 1004px; display: flex; gap: 20px;">
+    <div style="flex: 1; box-sizing: border-box; border: 1px solid #252b38; background: #0f131b; padding: 16px 18px; display: flex; flex-direction: column; gap: 9px;">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-family: 'Chakra Petch', sans-serif; font-size: 11px; font-weight: 700; color: #0b0d12; background: #ff6b35; padding: 2px 7px; letter-spacing: 0.08em;">READ</span>
-        <span class="eyebrow" style="color: #e8ecf5;">Scout searches for a Duelist</span>
+        <span class="eyebrow" style="color: #e8ecf5;">Feature: scout searches for a Duelist</span>
       </div>
       <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #7c879e; line-height: 1.85;">
         browser &rarr; RSC &rarr; Postgres <span style="color: #3ddad7;">(scout's JWT · RLS filters)</span><br>
-        RSC &rarr; FastAPI <span style="color: #ffa93d;">/chemistry/batch</span> &rarr; Postgres &rarr; scores<br>
+        RSC &rarr; model service <span style="color: #ffa93d;">/chemistry/batch</span> &rarr; Postgres &rarr; scores<br>
         &rarr; streamed HTML, cards ranked by fit
       </span>
       <span style="font-size: 11px; color: #9fb3c8; line-height: 1.5; border-top: 1px solid #1c2230; padding-top: 9px;">A player who has not toggled Open to Work never enters the result set. The database decides, not the UI.</span>
     </div>
-    <div style="flex-grow: 1; border: 1px solid #252b38; background: #0f131b; padding: 16px 18px; display: flex; flex-direction: column; gap: 9px;">
+    <div style="flex: 1; box-sizing: border-box; border: 1px solid #252b38; background: #0f131b; padding: 16px 18px; display: flex; flex-direction: column; gap: 9px;">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-family: 'Chakra Petch', sans-serif; font-size: 11px; font-weight: 700; color: #0b0d12; background: #3ddad7; padding: 2px 7px; letter-spacing: 0.08em;">WRITE</span>
-        <span class="eyebrow" style="color: #e8ecf5;">A match incident happens</span>
+        <span class="eyebrow" style="color: #e8ecf5;">Feature: an incident is filed and ruled</span>
       </div>
       <span style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #7c879e; line-height: 1.85;">
-        agent &rarr; FastAPI <span style="color: #ffa93d;">/telemetry/batch</span> &rarr; detect anomaly<br>
+        officiator &rarr; <span style="color: #ffa93d;">/api/incidents</span>, media via signed PUT<br>
         &rarr; INSERT incident + evidence_events &rarr; WAL<br>
-        &rarr; Realtime pushes to organizer <span style="color: #3ddad7;">in under 1s</span>
+        &rarr; Realtime fans out to subscribers <span style="color: #3ddad7;">in under 1s</span>
       </span>
       <span style="font-size: 11px; color: #9fb3c8; line-height: 1.5; border-top: 1px solid #1c2230; padding-top: 9px;">Evidence rows are append-only and timestamped. That is what makes a disputed ruling defensible.</span>
     </div>
@@ -197,7 +217,10 @@
       <span style="font-size: 11px; color: #8892a6;">Scheduled / supporting</span>
     </div>
     <div style="flex-grow: 1;"></div>
-    <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4d5566;">Hosting: Vercel (web) · Fly.io (service) · Supabase (data) · GitHub Actions (CI)</span>
+    <div style="display: flex; flex-direction: column; gap: 4px; text-align: right;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #5d6678;">Into Postgres: postgres-js from Node · asyncpg from Python · every connection under Row Level Security</span>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4d5566;">Hosting: Vercel (web) · Fly.io (model service) · Supabase (managed backend) · GitHub Actions (CI)</span>
+    </div>
   </div>
 </div>
 </x-dc>

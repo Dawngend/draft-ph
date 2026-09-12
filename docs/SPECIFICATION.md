@@ -66,7 +66,8 @@ Andre once granted a rematch on a verbal claim and a photo of a blue screen. The
 - Analytics dashboard for team captains
 - Mobile-responsive PWA
 - Post-Event Incident Report: counts, response times, recurring technical patterns, unresolved cases
-- Privacy-first telemetry: minimal, consent-based, match-window only
+- Privacy-first evidence handling: signed per-object uploads, readable only by the assigned officials, dropped on a retention clock
+- Desktop Match Companion for automatic in-match incident detection (post-ideathon: a second client on the same API, not a change to the architecture)
 
 ---
 

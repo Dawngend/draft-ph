@@ -8,55 +8,60 @@ This document is the answer to the submission's *Architecture, Useable Assets an
 
 ## 1. Architecture at a glance
 
-SEAL is a **serverless-first web platform with one specialist service**. Ninety percent of the product is Next.js route handlers talking to Postgres. The two things that genuinely do not fit that shape, the chemistry model and the telemetry ingest, get their own Python service.
+SEAL is a **serverless-first web platform with one long-lived model service**. Almost all of the product is Next.js route handlers talking to Postgres. The one thing that genuinely does not fit that shape, the chemistry model, gets its own Python container.
+
+Two rules govern this document, because a diagram that breaks them is a feature list wearing an architecture costume:
+
+1. **Every box is a separately deployed process or managed service.** If it is not something you can point a network diagram at, it does not get a box.
+2. **Every line is a real protocol.** Product features are described in the request flows, never in the boxes.
+
+That is why a Supabase project appears here as **four** boxes rather than one. Postgres, GoTrue, the object store, and the Realtime server are four separate processes speaking four different protocols, and collapsing them into a single "Supabase" box would hide the two decisions that matter most: where authorization is enforced, and how a client learns that a row changed.
 
 ```mermaid
 flowchart TB
-    subgraph clients["CLIENTS"]
-        web["Web app<br/>Next.js 15 · React 19 · PWA"]
-        agent["Match Companion<br/>Tauri desktop agent"]
+    subgraph clients["CLIENT"]
+        web["Web app<br/>browser · PWA<br/>Next.js 15 · React 19 · TypeScript"]
     end
 
-    subgraph edge["EDGE / APPLICATION"]
-        rh["Next.js Route Handlers<br/>/api/* · serverless on Vercel"]
-        rsc["React Server Components<br/>server-side reads"]
+    subgraph edge["APPLICATION TIER · VERCEL"]
+        rh["Route Handlers<br/>Node 22 · Vercel Function<br/>/api/* · writes, mutations"]
+        rsc["React Server Components<br/>Node 22 · Vercel Function<br/>server-rendered reads"]
     end
 
-    subgraph services["SPECIALIST SERVICE"]
-        fastapi["Chemistry and Telemetry Service<br/>FastAPI · Python 3.12"]
+    subgraph services["MODEL SERVICE · FLY.IO"]
+        fastapi["Model service<br/>Python 3.12 · FastAPI · uvicorn<br/>long-lived container"]
     end
 
-    subgraph data["DATA PLATFORM (Supabase)"]
-        auth["Supabase Auth<br/>.edu.ph gate"]
-        pg[("PostgreSQL<br/>+ Row Level Security")]
-        storage["Storage<br/>evidence media"]
-        rt["Realtime<br/>incident queue"]
+    subgraph data["MANAGED BACKEND · SUPABASE PROJECT"]
+        auth["Auth<br/>GoTrue · Go<br/>JWT issuer · .edu.ph allowlist"]
+        pg[("PostgreSQL 16<br/>Row Level Security<br/>source of truth")]
+        storage["Storage<br/>S3-compatible object store<br/>rows stay in Postgres"]
+        rt["Realtime<br/>Phoenix · Elixir<br/>WAL slot · WebSocket fan-out"]
     end
 
-    subgraph external["EXTERNAL SOURCES"]
-        stats["op.gg · Tracker.gg<br/>Dotabuff · OpenDota"]
-        discord["Discord<br/>contact handoff"]
+    subgraph external["EXTERNAL SYSTEMS"]
+        stats["Stat providers<br/>third-party HTTP APIs<br/>op.gg · Tracker.gg · OpenDota · Dotabuff"]
+        discord["Discord<br/>contact handoff by deep link"]
     end
 
     web -->|"HTTPS · fetch"| rh
-    web -->|"RSC render"| rsc
-    web -->|"WebSocket subscribe"| rt
-    agent -->|"HTTPS · signed batch"| fastapi
+    web -->|"HTTPS · RSC payload"| rsc
 
-    rh -->|"postgres-js · service role"| pg
-    rsc -->|"postgres-js · user JWT"| pg
-    rh -->|"REST · internal token"| fastapi
-    rh --> storage
-    rh --> auth
+    rsc -->|"HTTP · internal token"| fastapi
+    rh -->|"postgres · service role"| pg
+    rsc -->|"postgres · user JWT"| pg
+    rh -->|"S3 · signed PUT"| storage
+    rh -->|"HTTP · verify JWT"| auth
 
-    fastapi -->|"asyncpg"| pg
-    fastapi -->|"scheduled adapters"| stats
+    fastapi -->|"postgres · asyncpg"| pg
+    fastapi -.->|"HTTPS · cron pull"| stats
 
-    rt -.->|"logical replication"| pg
+    pg -.->|"WAL"| rt
+    rt -.->|"WebSocket · wss"| web
     web -->|"deep link"| discord
 
     classDef c fill:#1b1f2a,stroke:#3d4557,color:#e8ecf5
-    class web,agent,rh,rsc,fastapi,auth,pg,storage,rt,stats,discord c
+    class web,rh,rsc,fastapi,auth,pg,storage,rt,stats,discord c
 ```
 
 ### Why this shape
@@ -64,10 +69,11 @@ flowchart TB
 | Decision | Reason |
 |---|---|
 | Serverless Next.js as the default backend | One language across the app tier, one deploy, zero idle cost. A student team can ship it in a weekend. |
-| A separate Python service, not more route handlers | The chemistry model is numeric work with real libraries (numpy, pandas, scikit-learn). Serverless cold starts and 10s timeouts are wrong for it, and telemetry ingest is a long-lived write path. |
+| A separate Python container, not more route handlers | The chemistry model is numeric work with real libraries (numpy, pandas, scikit-learn). Serverless cold starts and short timeouts are wrong for a process that loads those on boot. |
 | Row Level Security as the enforcement boundary | Authorization lives in the database, not in UI checks. A bug in a React component cannot leak another player's private data. |
-| Supabase Realtime instead of polling | The incident queue is the one screen where seconds matter. Maria sees an incident when it happens, not on the next 30s poll. |
-| Desktop agent, not a browser extension | Detecting an application crash or a power interruption requires process and network visibility the browser sandbox does not grant. |
+| A separate object store, not a Postgres column | Evidence is screenshots and clips. Binaries in table rows bloat the database and break replication, so the object store holds the bytes and Postgres holds the row that points at them, under the same RLS policies. |
+| WAL replication, not polling | The Realtime server holds a replication slot on the write-ahead log, so an officiator sees an incident because the database committed it, not because a 30 second timer fired. The incident queue is the one screen where seconds matter. |
+| One client, not two | An in-match desktop companion is a product feature we want, not a tier of this architecture. It would be an additional client talking to the same route handlers, so it can be added later without moving a box. |
 
 ---
 
@@ -94,27 +100,30 @@ sequenceDiagram
 
 The key point for the judges: **the scout's JWT is what the database sees**. RLS decides visibility, so a player who has not toggled "Open to Work" never appears in the result set, no matter what the query asks for.
 
-### 2b. Write path, live incident
+### 2b. Write path, an incident is filed and ruled
 
 ```mermaid
 sequenceDiagram
-    participant A as Match Companion
-    participant F as FastAPI ingest
+    participant P as Officiator or player
+    participant RH as Route Handler
+    participant ST as Storage (S3 API)
     participant DB as PostgreSQL
-    participant RT as Supabase Realtime
+    participant RT as Realtime (Phoenix)
     participant M as Organizer dashboard
-    participant O as Officiator
+    participant O as Assigned officiator
 
-    A->>F: POST /telemetry/batch (match window only, signed)
-    F->>F: detect anomaly (latency, process exit, power)
-    F->>DB: INSERT incident + evidence_events
-    DB-->>RT: logical replication
-    RT-->>M: incident pushed to queue, < 1s
+    P->>RH: POST /api/incidents (report + rule reference)
+    RH->>ST: signed PUT, evidence media
+    RH->>DB: INSERT incident + evidence_events (service role)
+    DB-->>RT: WAL, logical replication slot
+    RT-->>M: incident pushed to the queue, < 1s
     M->>DB: assign officiator (route handler)
     O->>DB: read evidence_events, ordered
     O->>DB: INSERT ruling (rule ref, note, authorization)
-    DB-->>RT: both teams notified
+    DB-->>RT: WAL again, both teams notified
 ```
+
+Note what is **not** here: nothing polls, and no client writes to Postgres directly. The route handler is the only thing holding the service role, and the only thing that can insert an evidence row.
 
 Every row in `evidence_events` is append-only and timestamped. That is what makes the audit trail defensible when a team disputes a ruling, which is the exact failure that cost Andre his credibility in the problem statement.
 
@@ -160,13 +169,13 @@ erDiagram
 
 | Class | Contents | Who can read |
 |---|---|---|
-| Private | Email, phone, raw telemetry samples, school ID image | Owner only |
+| Private | Email, phone, school ID image, unpublished draft cards | Owner only |
 | Public profile | Player Card, stat bars, tournament history, school | Anyone, only when `open_to_work` or the card is published |
 | Scout-visible | Contact handoff, watchlist notes | Verified scouts of a registered team |
 | Officiating | Evidence timeline, rulings | Assigned officials of that tournament |
 | Aggregated | Leaderboards, post-event incident reports | Public, anonymized |
 
-Telemetry is collected **only inside a match window**, only with consent recorded per tournament, encrypted in transit, and dropped on a fixed retention clock. Organizers see derived indicators, never raw device access. This is a deliberate design constraint, not a feature we can trade away for convenience.
+Evidence media is uploaded **only by a signed URL scoped to one object**, is readable only by the assigned officials of that tournament, and drops on a fixed retention clock once the ruling is final. Organizers see the evidence attached to an incident, never a player's device or account. This is a deliberate design constraint, not a feature we can trade away for convenience.
 
 ---
 

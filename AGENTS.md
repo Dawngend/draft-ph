@@ -38,5 +38,5 @@ No em dashes anywhere in user-facing copy, documentation, or commit messages. Us
 ## Data and privacy
 
 - Row Level Security is the enforcement boundary. Never rely on a UI check for authorization.
-- Telemetry is match-window only, consent-recorded, and retention-bounded. Do not widen collection.
+- Evidence media is uploaded by a signed URL scoped to one object, readable only by the assigned officials of that tournament, and retention-bounded once a ruling is final. Do not widen access.
 - External stat adapters use documented endpoints with rate limiting and caching. No CAPTCHA bypass, no fingerprint spoofing, no identity rotation. If a source blocks, fall back to manual entry with a visible unverified badge.

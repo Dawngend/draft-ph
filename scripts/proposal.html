@@ -167,32 +167,32 @@
   <p class="req">A diagram of how frontend, backend, and database communicate, plus the languages and frameworks we will use.</p>
   <div class="section-rule"></div>
 
-  <p>SEAL is a <strong>serverless-first web platform with one specialist service</strong>. Roughly ninety percent of the product is Next.js talking directly to Postgres. The two things that genuinely do not fit that shape, the team chemistry model and the live telemetry ingest, get their own Python service.</p>
+  <p>SEAL is a <strong>serverless-first web platform with one long-lived model service</strong>. Almost all of it is Next.js talking directly to Postgres; the team chemistry model, which does not fit that shape, gets its own Python container.</p>
+
+  <p>Every box in the diagram is a <strong>separately deployed process or managed service</strong>, and every line is a real protocol.</p>
 
   <div class="two-col" style="margin-bottom:18px">
-    <div class="tier"><h4>Frontend</h4><p>Next.js 15 App Router, React 19, TypeScript, Tailwind. React Server Components read Postgres on the server under the signed-in user's JWT, so no separate API layer is needed for reads. A Tauri desktop agent runs only inside a match window.</p></div>
-    <div class="tier"><h4>Backend</h4><p>Next.js route handlers deployed as Vercel serverless functions handle writes and orchestration. One FastAPI service on Python 3.12 owns the chemistry model and telemetry ingest, reached over REST with an internal token.</p></div>
-    <div class="tier"><h4>Database</h4><p>Supabase PostgreSQL 16 with Row Level Security as the authorization boundary, Supabase Auth gated on <code>.edu.ph</code> domains, Storage for evidence media, and Realtime pushing the incident queue over WebSocket.</p></div>
-    <div class="tier"><h4>External sources</h4><p>Scheduled adapters pull match history from op.gg, Tracker.gg, Dotabuff, and OpenDota. Discord is a contact handoff by deep link, never a data store.</p></div>
+    <div class="tier"><h4>Frontend</h4><p>One client: a Next.js 15 App Router web app (React 19, TypeScript, Tailwind) served as a PWA. React Server Components read Postgres on the server under the signed-in user's JWT, so no separate API layer is needed for reads.</p></div>
+    <div class="tier"><h4>Backend</h4><p>Next.js route handlers, deployed as Vercel Functions on Node 22, handle writes and orchestration. One FastAPI service on Python 3.12 and uvicorn runs as a long-lived Fly.io container and owns the chemistry model, reached over HTTP with an internal token.</p></div>
+    <div class="tier"><h4>Database and managed backend</h4><p>A Supabase project is four distinct services, not one: <strong>Postgres 16</strong> with Row Level Security as the authorization boundary, <strong>GoTrue</strong> issuing JWTs behind a <code>.edu.ph</code> allowlist, an <strong>S3-compatible object store</strong> whose metadata rows stay in Postgres, and a <strong>Phoenix/Elixir server</strong> holding a WAL replication slot and fanning out over WebSocket.</p></div>
+    <div class="tier"><h4>External systems</h4><p>A cron pull from the model service fetches match history over HTTP from op.gg, Tracker.gg, Dotabuff, and OpenDota, rate limited and cached, with manual entry as the fallback. Discord is a contact handoff by deep link, never a data store.</p></div>
   </div>
 
   <h3>How the three tiers communicate</h3>
   <table>
     <tr><th style="width:26%">Path</th><th>How it flows</th></tr>
     <tr><td>Read: scout search</td><td>Browser renders a React Server Component, which queries Postgres directly with the user's JWT. Row Level Security decides what that scout may see. No API round trip, and no client-side filtering of private data.</td></tr>
-    <tr><td>Write: live incident</td><td>The Tauri agent posts a signed telemetry batch to FastAPI, which writes the incident to Postgres. Logical replication pushes it through Supabase Realtime to every subscribed officiator within seconds, not on the next poll.</td></tr>
+    <tr><td>Write: an incident is filed</td><td>An officiator posts to a route handler, which inserts the incident and its append-only evidence rows into Postgres under the service role, and sends media straight to the object store with a signed PUT. The Phoenix server holds a replication slot on the Postgres WAL and fans the new row out over WebSocket to every subscriber in under a second. Nothing polls.</td></tr>
   </table>
 
   <h3>Why this shape</h3>
   <table>
     <tr><th style="width:32%">Decision</th><th>Reason</th></tr>
     <tr><td>Serverless Next.js as the default backend</td><td>One language across the app tier, one deploy, zero idle cost. A student team can ship it in a weekend.</td></tr>
-    <tr><td>A separate Python service</td><td>The chemistry model is numeric work on numpy, pandas, and scikit-learn. Serverless cold starts and short timeouts are wrong for it.</td></tr>
+    <tr><td>A separate Python container, not more serverless functions</td><td>The chemistry model is numeric work on numpy, pandas, and scikit-learn. Serverless cold starts and short timeouts are wrong for a process that loads those on boot.</td></tr>
     <tr><td>Row Level Security as the boundary</td><td>Authorization lives in the database, not in UI checks. A bug in a React component cannot leak another player's private data.</td></tr>
-    <tr><td>Desktop agent, not a browser extension</td><td>Detecting a crash or a power interruption needs process and network visibility the browser sandbox does not grant.</td></tr>
+    <tr><td>A separate object store and change stream</td><td>Binaries in table rows bloat the database and break replication, so the object store holds the bytes and Postgres holds the row pointing at them. And the Phoenix server reads the WAL, so an incident appears because the database committed it, not because a timer fired.</td></tr>
   </table>
-
-  <div class="next">The architecture diagram is on the next page</div>
 
   <div class="foot"><span>SEAL · Student Esports Athlete League</span><span>Team Hackatots · The Next Gen 2026</span></div>
 </section>
@@ -212,19 +212,18 @@
     <tr><td>Components</td><td>shadcn/ui, extended</td><td>Over Material UI. Copy-in components the team owns and restyles.</td></tr>
     <tr><td>Service tier</td><td>FastAPI 0.115</td><td>Over Flask or Django. Async by default, Pydantic validation, automatic OpenAPI.</td></tr>
     <tr><td>Language, service</td><td>Python 3.12</td><td>numpy, pandas, and scikit-learn are the reason this service exists.</td></tr>
-    <tr><td>Desktop agent</td><td>Tauri 2</td><td>Over Electron. A 5MB binary instead of 150MB, with OS-level process visibility.</td></tr>
     <tr><td>Charts</td><td>Recharts 2</td><td>Over Chart.js. React-native composition, themed from the same tokens.</td></tr>
   </table>
 
   <h3>Data platform and hosting</h3>
   <table>
     <tr><th style="width:20%">Concern</th><th style="width:24%">Choice</th><th>Reason</th></tr>
-    <tr><td>Database</td><td>Supabase PostgreSQL 16</td><td>Rosters, matches, incidents, and rulings are all relationships. Row Level Security makes the privacy model enforceable.</td></tr>
-    <tr><td>Auth</td><td>Supabase Auth</td><td>Email OTP with a <code>.edu.ph</code> allowlist, so school verification is handled at the auth layer.</td></tr>
-    <tr><td>File storage</td><td>Supabase Storage</td><td>Evidence screenshots and brackets, with signed URLs under the same policies.</td></tr>
-    <tr><td>Realtime</td><td>Supabase Realtime</td><td>Logical replication pushed to subscribed clients, so the incident queue updates without polling.</td></tr>
+    <tr><td>Database</td><td>Supabase Postgres 16</td><td>Rosters, matches, incidents, and rulings are all relationships. Row Level Security makes the privacy model enforceable in the database rather than in UI checks.</td></tr>
+    <tr><td>Auth service</td><td>GoTrue (Go)</td><td>The JWT issuer inside the Supabase project. Email OTP with a <code>.edu.ph</code> allowlist, so school verification happens at the auth layer instead of being bolted on later.</td></tr>
+    <tr><td>Object store</td><td>Supabase Storage, S3-compatible</td><td>Evidence media as objects behind the S3 API with signed URLs. The metadata row stays in Postgres under the same RLS policies as everything else.</td></tr>
+    <tr><td>Change stream</td><td>Supabase Realtime (Phoenix, Elixir)</td><td>A separate server process holding a WAL replication slot on Postgres and fanning changes out over WebSocket. This is what makes the incident queue live.</td></tr>
     <tr><td>Hosting, web</td><td>Vercel</td><td>Zero-config Next.js deploys, preview URLs per branch, free tier sufficient for the build phase.</td></tr>
-    <tr><td>Hosting, service</td><td>Fly.io</td><td>A long-lived container for the FastAPI service, which serverless is the wrong shape for.</td></tr>
+    <tr><td>Hosting, model service</td><td>Fly.io</td><td>A long-lived container. Serverless is the wrong shape for a process that loads numeric libraries on start.</td></tr>
   </table>
 
   <div class="foot"><span>SEAL · Student Esports Athlete League</span><span>Team Hackatots · The Next Gen 2026</span></div>
@@ -255,8 +254,8 @@
     <tr><td>GitHub Actions</td><td>Typecheck and build on every push, which is what keeps the prototype deployable.</td></tr>
   </table>
 
-  <h3>Scope deliberately held back for the build phase</h3>
-  <p>Face verification and live op.gg auto-sync are out of the demo on purpose. Both depend on third parties, neither changes the pitch, and both are straightforward to add once the data contract is live.</p>
+  <h3>Scope deliberately held back</h3>
+  <p>Three things are out of the demo on purpose. <strong>Face verification</strong> and <strong>live op.gg auto-sync</strong> both depend on third parties and neither changes the pitch. A <strong>desktop Match Companion</strong> for automatic in-match incident detection is a product feature we want, not a tier of this architecture: it would be an additional client talking to the same route handlers, so it can be added later without moving a single box in the diagram. For the ideathon, incidents are filed by an officiator through the web app.</p>
 
   <div class="foot"><span>SEAL · Student Esports Athlete League</span><span>Team Hackatots · The Next Gen 2026</span></div>
 </section>
