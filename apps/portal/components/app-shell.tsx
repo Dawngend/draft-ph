@@ -78,14 +78,14 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="app-shell">
       <div className="prototype-banner">IDEATHON PROTOTYPE · FIXTURE DATA · NO LIVE BACKEND</div>
       <aside className="app-sidebar">
-        <Link className="sidebar-brand" href="/" aria-label="DRAFT.PH overview">
+        <Link className="sidebar-brand" href="/" aria-label="SEAL overview">
           <span className="brand-tile">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinejoin="round" aria-hidden="true">
               <path d="M4 5h10l6 7-6 7H4l6-7-6-7Z" />
               <path d="m10 5 5 7-5 7" />
             </svg>
           </span>
-          <span className="brand-copy"><strong>DRAFT.PH</strong><small>{workspace}</small></span>
+          <span className="brand-copy"><strong>SEAL</strong><small>{workspace}</small></span>
         </Link>
 
         <nav className="sidebar-nav" aria-label="Product navigation">

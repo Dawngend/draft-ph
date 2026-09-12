@@ -5,7 +5,7 @@ Second Codex task, after `BUILD_BRIEF.md`. Two goals, in order:
 1. Every visible control either works or is visibly inactive. No dead buttons.
 2. The app wears the same layout language as `PyTorch-FEU-Tech-Chapter/pytorch-fit-system`, which is the handoff target.
 
-Keep DRAFT.PH's own palette, type, and identity from `docs/TECH_STACK.md`. Borrow the **structure**, not the branding. Never write PyTorch, FIT, or their wordmark anywhere in DRAFT.PH.
+Keep SEAL's own palette, type, and identity from `docs/TECH_STACK.md`. Borrow the **structure**, not the branding. Never write PyTorch, FIT, or their wordmark anywhere in SEAL.
 
 ---
 
@@ -17,7 +17,7 @@ Every route renders inside one persistent shell. Build it as `apps/portal/compon
 
 Full-bleed strip above everything, spanning the whole viewport width including over the sidebar.
 
-- Background `--draft-orange`, text `--arena-black`
+- Background `--seal-orange`, text `--arena-black`
 - Text centered, uppercase, `--font-mono`, ~12px, `letter-spacing: .14em`, weight 600
 - Content: `IDEATHON PROTOTYPE · FIXTURE DATA · NO LIVE BACKEND`
 - Height 34px, no border
@@ -29,14 +29,14 @@ This is an honesty device. It tells a judge immediately that the data is seeded,
 Fixed, 264px wide, full height, background `--subground`, right border `1px solid --arena-line`.
 
 **Brand block** (top, 20px padding):
-- 48px square tile, `border-radius: 12px`, background `linear-gradient(135deg, var(--draft-orange), var(--draft-ember))`, containing a 24px inline-SVG mark in `--arena-black`. Draw a simple angular chevron or shield. Not an emoji.
-- Beside it, two stacked lines: `DRAFT.PH` in `--font-display`, 15px, weight 700, letter-spacing .02em; and a muted 12px second line naming the current workspace (`Scout Workspace` / `Officiator Workspace`).
+- 48px square tile, `border-radius: 12px`, background `linear-gradient(135deg, var(--seal-orange), var(--seal-ember))`, containing a 24px inline-SVG mark in `--arena-black`. Draw a simple angular chevron or shield. Not an emoji.
+- Beside it, two stacked lines: `SEAL` in `--font-display`, 15px, weight 700, letter-spacing .02em; and a muted 12px second line naming the current workspace (`Scout Workspace` / `Officiator Workspace`).
 
 **Nav list**: each item is 44px tall, `border-radius: 10px`, 12px horizontal padding, a 20px inline-SVG icon plus a 14.5px label, 2px vertical gap between items.
 
 - Default: transparent background, `--text-muted` label, `--text-dim` icon
 - Hover: background `rgba(255,255,255,.04)`, label `--text-primary`
-- Active: background `--draft-orange`, label and icon `--arena-black`, weight 600
+- Active: background `--seal-orange`, label and icon `--arena-black`, weight 600
 - Locked: label `--text-dim` at 55% opacity, a 14px padlock icon right-aligned, `cursor: not-allowed`, `aria-disabled="true"`, and it does not navigate
 
 Items, in order, with their state:
@@ -57,7 +57,7 @@ Items, in order, with their state:
 
 - Eyebrow `BUILD PHASE` in mono, 10px, letter-spacing .16em, `--text-dim`
 - A status row: a 7px `--verified-cyan` dot and the text `Ideathon · 4 of 9 surfaces`
-- A 4px progress track, `--arena-line` background, filled to 44% with `--draft-orange`
+- A 4px progress track, `--arena-line` background, filled to 44% with `--seal-orange`
 
 ### Content area
 
@@ -71,7 +71,7 @@ Currently `/` redirects to `/scout`. Replace it with a real overview page, becau
 
 **Stat tile row**: four tiles in a `repeat(4, minmax(0,1fr))` grid, 18px gap.
 
-Each tile: background `--arena-panel`, `1px solid --arena-line`, `border-radius: 12px`, 20px padding. Inside, stacked: a 22px inline-SVG icon in `--draft-orange`; a number in `--font-display` at 38px weight 700, `--text-primary`; a 13px `--text-muted` label.
+Each tile: background `--arena-panel`, `1px solid --arena-line`, `border-radius: 12px`, 20px padding. Inside, stacked: a 22px inline-SVG icon in `--seal-orange`; a number in `--font-display` at 38px weight 700, `--text-primary`; a 13px `--text-muted` label.
 
 | Value | Label | Source |
 |---|---|---|

@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "draft-ph-portal",
+      "name": "seal-portal",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev:portal"],
       "port": 3000

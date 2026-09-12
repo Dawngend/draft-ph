@@ -1,4 +1,4 @@
-import { leaderboardFixture } from "@draft-ph/protocol/fixtures";
+import { leaderboardFixture } from "@seal/protocol/fixtures";
 import { Leaderboard } from "../../components/leaderboard";
 
 export default function LeaderboardPage() {

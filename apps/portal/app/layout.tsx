@@ -22,8 +22,8 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DRAFT.PH",
-  description: "PH collegiate esports scouting and tournament integrity prototype.",
+  title: "SEAL | Student Esports Athlete League",
+  description: "The all-in-one platform for Philippine collegiate esports: verified player cards, AI team chemistry, a scout dashboard, and auditable incident management.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

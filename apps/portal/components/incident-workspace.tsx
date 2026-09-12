@@ -1,7 +1,7 @@
 "use client";
 
-import type { IncidentSeverity, IncidentStatus, OfficiateFixture } from "@draft-ph/protocol";
-import { DocumentIcon, Eyebrow, LockIcon, StatusChip, VerifiedIcon } from "@draft-ph/design-system";
+import type { IncidentSeverity, IncidentStatus, OfficiateFixture } from "@seal/protocol";
+import { DocumentIcon, Eyebrow, LockIcon, StatusChip, VerifiedIcon } from "@seal/design-system";
 import { useMemo, useState } from "react";
 
 const severityColor: Record<IncidentSeverity, string> = { HIGH: "#e5484d", MED: "#ffa93d", LOW: "#8892a6" };

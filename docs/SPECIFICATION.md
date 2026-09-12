@@ -1,4 +1,4 @@
-# DRAFT.PH Specification
+# SEAL Specification
 
 **Team Hackatots** · The Next Gen 2026
 

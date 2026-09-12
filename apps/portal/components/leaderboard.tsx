@@ -1,7 +1,7 @@
 "use client";
 
-import type { LeaderboardFixture } from "@draft-ph/protocol";
-import { ArrowIcon, Eyebrow, LockIcon, StatusChip, VerifiedIcon } from "@draft-ph/design-system";
+import type { LeaderboardFixture } from "@seal/protocol";
+import { ArrowIcon, Eyebrow, LockIcon, StatusChip, VerifiedIcon } from "@seal/design-system";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 

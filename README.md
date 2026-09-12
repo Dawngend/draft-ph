@@ -1,8 +1,8 @@
-# DRAFT.PH
+# SEAL
 
-**The complete collegiate esports platform for the Philippines.**
+**Student Esports Athlete League.** The all-in-one platform for Philippine collegiate esports.
 
-Verified player discovery, tournament integrity, and evidence-backed incident management in one system.
+Verified player discovery, AI-assisted team chemistry, and evidence-backed incident management in one system.
 
 Submitted to **The Next Gen 2026** by **Team Hackatots**.
 
@@ -10,7 +10,13 @@ Submitted to **The Next Gen 2026** by **Team Hackatots**.
 
 ## Elevator pitch
 
-Philippine collegiate esports runs on Facebook groups, Discord screenshots, and verbal rulings. DRAFT.PH replaces that with one platform: players get a verified Player Card built from real match data, scouts get a searchable dashboard with chemistry prediction and roster simulation, and tournament officials get auto-detected incidents with an evidence timeline and an auditable ruling workspace.
+SEAL is the first all-in-one platform built for Philippine collegiate esports. Players get a verified Player Card built from real match data, team captains get a searchable scout dashboard with AI-powered chemistry prediction and roster simulation, and tournament organizers get auto-detected incidents with an evidence timeline and an auditable ruling workspace. One system, so players get found, teams recruit smart, and tournaments run clean.
+
+## Problem statement
+
+Philippine collegiate esports is booming, but the system is broken. Players blast LFG posts across 5+ Facebook groups and 3+ Discord servers with no guarantee of being seen. Team captains scroll through hundreds of unverified profiles they cannot trust. Tournament organizers juggle incident reports from screenshots, chats, and verbal claims with no central system and no audit trail. The result is wasted time, inconsistent rulings, and talented players going undiscovered.
+
+SEAL fixes this as the first all-in-one platform for PH collegiate esports: verified player cards, AI-powered team chemistry, a structured scout dashboard, and full incident management, so players get found, teams recruit smart, and tournaments run clean.
 
 ## The three pillars
 
@@ -20,15 +26,16 @@ Philippine collegiate esports runs on Facebook groups, Discord screenshots, and 
 | 2. Tournament Integrity | `.edu.ph` school verification, match-window identity checks, cross-league history consolidation | Leagues and schools |
 | 3. Incident Management | Auto-detection, Evidence Timeline, Ruling Workspace, post-event reports | Maria (organizer), Andre (officiator) |
 
-**Live prototype:** https://draft-ph.vercel.app
+**Live prototype:** https://seal-ph.vercel.app
 
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md), the frontend / backend / database contract
 - [Tech stack](docs/TECH_STACK.md), languages, frameworks, and useable assets
 - [Specification](docs/SPECIFICATION.md), features, personas, and scope
-- [Wireframes](docs/WIREFRAMES.md), core feature layouts
 - [Agent operating policy](AGENTS.md)
+
+UI wireframes live in [`design/`](design/) as standalone artboards, and the same screens run live in the prototype.
 
 ## Status
 

@@ -4,7 +4,7 @@ Handed to Codex. Scope is the clickable prototype only, not the real backend.
 
 ## Task
 
-Build a Next.js 15 App Router prototype of DRAFT.PH that renders four screens from fixture data and deploys to Vercel. No database, no auth, no API calls. Every screen reads from typed fixtures so the Supabase query can replace the fixture import later without touching the components.
+Build a Next.js 15 App Router prototype of SEAL that renders four screens from fixture data and deploys to Vercel. No database, no auth, no API calls. Every screen reads from typed fixtures so the Supabase query can replace the fixture import later without touching the components.
 
 ## Non-negotiable inputs
 
@@ -41,4 +41,4 @@ design-system/         Shared primitives extracted from the artboards
 
 ## Deploy
 
-Vercel, project `draft-ph`, from `apps/portal`. Report the URL.
+Vercel, project `seal`, from `apps/portal`. Report the URL.

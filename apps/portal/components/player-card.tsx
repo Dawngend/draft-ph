@@ -1,6 +1,6 @@
-import type { Player } from "@draft-ph/protocol";
-import { careerStatsFor } from "@draft-ph/protocol";
-import { ArrowIcon, Eyebrow, InfoIcon, LockIcon, SchoolIcon, StatusChip, VerifiedIcon } from "@draft-ph/design-system";
+import type { Player } from "@seal/protocol";
+import { careerStatsFor } from "@seal/protocol";
+import { ArrowIcon, Eyebrow, InfoIcon, LockIcon, SchoolIcon, StatusChip, VerifiedIcon } from "@seal/design-system";
 
 export function PlayerCard({ player }: { player: Player }) {
   const score = player.rating.toFixed(1).split(".");

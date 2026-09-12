@@ -1,4 +1,4 @@
-# DRAFT.PH Solution Architecture
+# SEAL Solution Architecture
 
 **Team Hackatots** · The Next Gen 2026 · Owners: Dawn, Andrew
 
@@ -8,7 +8,7 @@ This document is the answer to the submission's *Architecture, Useable Assets an
 
 ## 1. Architecture at a glance
 
-DRAFT.PH is a **serverless-first web platform with one specialist service**. Ninety percent of the product is Next.js route handlers talking to Postgres. The two things that genuinely do not fit that shape, the chemistry model and the telemetry ingest, get their own Python service.
+SEAL is a **serverless-first web platform with one specialist service**. Ninety percent of the product is Next.js route handlers talking to Postgres. The two things that genuinely do not fit that shape, the chemistry model and the telemetry ingest, get their own Python service.
 
 ```mermaid
 flowchart TB

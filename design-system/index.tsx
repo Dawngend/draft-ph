@@ -3,7 +3,7 @@ import type { ReactNode, SVGProps } from "react";
 export function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <span className="brand" style={{ fontSize: compact ? 17 : 20 }}>
-      DRAFT<span>.PH</span>
+      SEAL
     </span>
   );
 }

@@ -1,4 +1,4 @@
-import { getPlayerById, players } from "@draft-ph/protocol/fixtures";
+import { getPlayerById, players } from "@seal/protocol/fixtures";
 import { notFound } from "next/navigation";
 import { PlayerCard } from "../../../components/player-card";
 

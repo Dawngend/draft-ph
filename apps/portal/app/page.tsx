@@ -1,5 +1,5 @@
-import { ArrowIcon, StatusChip } from "@draft-ph/design-system";
-import { leaderboardFixture, officiateFixture, scoutFixture } from "@draft-ph/protocol/fixtures";
+import { ArrowIcon, StatusChip } from "@seal/design-system";
+import { leaderboardFixture, officiateFixture, scoutFixture } from "@seal/protocol/fixtures";
 import Link from "next/link";
 import type { ReactNode, SVGProps } from "react";
 
@@ -61,7 +61,7 @@ export default function Home() {
   return (
     <main className="overview-page">
       <header className="page-heading">
-        <div><span className="eyebrow">DRAFT.PH OVERVIEW</span><h1>Collegiate esports, in one operating view</h1><p>Four fixture-backed surfaces for player discovery and evidence-based tournament rulings.</p></div>
+        <div><span className="eyebrow">SEAL OVERVIEW</span><h1>Collegiate esports, in one operating view</h1><p>Four fixture-backed surfaces for player discovery and evidence-based tournament rulings.</p></div>
         <StatusChip>Fixture data</StatusChip>
       </header>
 

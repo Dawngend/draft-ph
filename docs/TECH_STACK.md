@@ -76,8 +76,8 @@ A palette derived from the subject, PH collegiate esports at night, rather than 
 | `--arena-black` | `#0b0d12` | Page ground |
 | `--arena-panel` | `#141821` | Card and panel surface |
 | `--arena-line` | `#252b38` | Hairline borders, the primary separation device |
-| `--draft-orange` | `#ff6b35` | Primary accent, calls to action, live states |
-| `--draft-ember` | `#ffa93d` | Secondary accent, ratings and highlights |
+| `--seal-orange` | `#ff6b35` | Primary accent, calls to action, live states |
+| `--seal-ember` | `#ffa93d` | Secondary accent, ratings and highlights |
 | `--verified-cyan` | `#3ddad7` | Verified badges, confirmed evidence |
 | `--flag-crimson` | `#e5484d` | Incidents, severity, errors |
 | `--text-primary` | `#e8ecf5` | Body text |

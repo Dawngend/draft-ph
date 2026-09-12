@@ -1,7 +1,7 @@
 "use client";
 
-import { VALORANT_RANK_ORDER, valorantRankIndex, type PlayerRole, type ScoutFixture } from "@draft-ph/protocol";
-import { ArrowIcon, BookmarkIcon, Eyebrow, FilterIcon, StatusChip, VerifiedIcon } from "@draft-ph/design-system";
+import { VALORANT_RANK_ORDER, valorantRankIndex, type PlayerRole, type ScoutFixture } from "@seal/protocol";
+import { ArrowIcon, BookmarkIcon, Eyebrow, FilterIcon, StatusChip, VerifiedIcon } from "@seal/design-system";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
