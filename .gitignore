@@ -20,3 +20,5 @@ target/
 supabase/.branches
 supabase/.temp
 *.tsbuildinfo
+scripts/*.pdf
+scripts/chrome-prof*/

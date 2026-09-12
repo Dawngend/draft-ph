@@ -41,4 +41,4 @@ design-system/         Shared primitives extracted from the artboards
 
 ## Deploy
 
-Vercel, project `seal`, from `apps/portal`. Report the URL.
+Vercel, project `seal-ph`, from `apps/portal`. Report the URL.

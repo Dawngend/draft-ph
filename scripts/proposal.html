@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SEAL Concept Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  :root {
+    --arena-black: #0b0d12;
+    --arena-panel: #12151d;
+    --arena-line: #dfe3ec;
+    --seal-orange: #ff6b35;
+    --seal-ember: #d9541f;
+    --ink: #14171f;
+    --muted: #5c6474;
+  }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; font-family: "Inter Tight", system-ui, sans-serif; color: var(--ink); background: #fff; }
+  .page { width: 210mm; height: 297mm; padding: 18mm 18mm 22mm; page-break-after: always; position: relative; overflow: hidden; }
+  .page:last-child { page-break-after: auto; }
+
+  /* Cover */
+  .cover { background: var(--arena-black); color: #e8ecf5; padding: 0; display: flex; flex-direction: column; }
+  .cover-body { flex: 1; padding: 54mm 18mm 0; display: flex; flex-direction: column; }
+  .cover-rule { height: 6px; background: linear-gradient(90deg, var(--seal-orange), var(--seal-ember)); }
+  .wordmark { font-family: "Chakra Petch", sans-serif; font-weight: 700; font-size: 124px; letter-spacing: .02em; line-height: 1; margin: 0; }
+  .expand { font-family: "Chakra Petch", sans-serif; font-weight: 600; font-size: 20px; letter-spacing: .18em; text-transform: uppercase; color: var(--seal-orange); margin: 14px 0 0; }
+  .cover p.lede { font-size: 17px; line-height: 1.6; color: #b4bccd; max-width: 150mm; margin: 26px 0 0; }
+  .pillars { margin-top: auto; margin-bottom: 14mm; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .pillars div { border-top: 2px solid #2a3040; padding-top: 12px; }
+  .pillars span { display: block; font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: .18em; color: var(--seal-orange); margin-bottom: 7px; }
+  .pillars strong { display: block; font-family: "Chakra Petch", sans-serif; font-size: 14px; font-weight: 600; color: #e8ecf5; margin-bottom: 5px; }
+  .pillars em { display: block; font-style: normal; font-size: 10.6px; line-height: 1.5; color: #8b94a6; }
+  .cover-meta { margin-top: auto; padding: 0 18mm 22mm; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .cover-meta div span { display: block; font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #6d7689; margin-bottom: 6px; }
+  .cover-meta div strong { font-family: "Chakra Petch", sans-serif; font-size: 15px; font-weight: 600; color: #e8ecf5; }
+
+  /* Content pages */
+  .kicker { font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--seal-orange); margin: 0 0 8px; }
+  h2 { font-family: "Chakra Petch", sans-serif; font-size: 25px; font-weight: 700; letter-spacing: -.01em; margin: 0 0 4px; }
+  h3 { font-family: "Chakra Petch", sans-serif; font-size: 14px; font-weight: 700; letter-spacing: .02em; margin: 18px 0 7px; }
+  .section-rule { height: 3px; width: 54px; background: var(--seal-orange); margin: 10px 0 16px; }
+  p { font-size: 11.7px; line-height: 1.62; margin: 0 0 10px; }
+  .pull { border-left: 3px solid var(--seal-orange); background: #fff6f2; padding: 12px 15px; margin: 0 0 15px; }
+  .pull p { margin: 0; font-size: 12.4px; }
+  ul { margin: 0 0 14px; padding-left: 18px; }
+  li { font-size: 11.7px; line-height: 1.56; margin-bottom: 6px; }
+  table { width: 100%; border-collapse: collapse; margin: 0 0 14px; }
+  th { text-align: left; font-family: "JetBrains Mono", monospace; font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); border-bottom: 2px solid var(--ink); padding: 0 10px 7px 0; }
+  td { font-size: 10.9px; line-height: 1.46; border-bottom: 1px solid var(--arena-line); padding: 7px 10px 7px 0; vertical-align: top; }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0 0 20px; }
+  .stat { border: 1px solid var(--arena-line); border-top: 3px solid var(--seal-orange); padding: 12px; }
+  .stat strong { display: block; font-family: "Chakra Petch", sans-serif; font-size: 30px; font-weight: 700; line-height: 1; }
+  .stat span { display: block; font-size: 10.4px; color: var(--muted); margin-top: 5px; line-height: 1.38; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .tier { border: 1px solid var(--arena-line); padding: 14px; }
+  .tier h4 { font-family: "Chakra Petch", sans-serif; font-size: 13px; margin: 0 0 6px; }
+  .tier p { font-size: 10.8px; margin: 0; color: var(--muted); line-height: 1.5; }
+  .foot { position: absolute; left: 18mm; right: 18mm; bottom: 12mm; display: flex; justify-content: space-between; font-family: "JetBrains Mono", monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #98a0b0; border-top: 1px solid var(--arena-line); padding-top: 7px; }
+  code { font-family: "JetBrains Mono", monospace; font-size: 11px; background: #f2f4f8; padding: 1px 5px; }
+  a { color: var(--seal-ember); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- 1. COVER -->
+<section class="page cover">
+  <div class="cover-rule"></div>
+  <div class="cover-body">
+    <h1 class="wordmark">SEAL</h1>
+    <p class="expand">Student Esports Athlete League</p>
+    <p class="lede">The first all-in-one platform for Philippine collegiate esports. Verified player cards, AI-powered team chemistry, a structured scout dashboard, and full incident management, so players get found, teams recruit smart, and tournaments run clean.</p>
+    <div class="pillars">
+      <div><span>01</span><strong>Player discovery</strong><em>Verified Player Cards, a searchable scout dashboard, team chemistry, and public leaderboards.</em></div>
+      <div><span>02</span><strong>Tournament integrity</strong><em>School verification on <i>.edu.ph</i>, match-window identity checks, consolidated cross-league history.</em></div>
+      <div><span>03</span><strong>Incident management</strong><em>Auto-detection, an evidence timeline, an auditable ruling workspace, and post-event reports.</em></div>
+    </div>
+  </div>
+  <div class="cover-meta">
+    <div><span>Submitted to</span><strong>The Next Gen 2026</strong></div>
+    <div><span>Team</span><strong>Hackatots</strong></div>
+    <div><span>Live prototype</span><strong>seal-ph.vercel.app</strong></div>
+  </div>
+  <div class="cover-rule"></div>
+</section>
+
+<!-- 2. TITLE, PITCH, PROBLEM -->
+<section class="page">
+  <p class="kicker">01 · Project title and elevator pitch</p>
+  <h2>SEAL, the Student Esports Athlete League</h2>
+  <div class="section-rule"></div>
+
+  <div class="pull">
+    <p>SEAL is the first all-in-one platform built for Philippine collegiate esports. Players get a verified Player Card built from real match data, team captains get a searchable scout dashboard with AI-powered team chemistry and roster simulation, and tournament organizers get auto-detected incidents with an evidence timeline and an auditable ruling workspace.</p>
+  </div>
+
+  <p class="kicker" style="margin-top:26px">02 · Problem statement</p>
+  <h2>Booming scene, broken system</h2>
+  <div class="section-rule"></div>
+
+  <p>Philippine collegiate esports is booming, but the system underneath it is broken. The three people who make the scene work each lose time to the same missing infrastructure.</p>
+
+  <div class="stats">
+    <div class="stat"><strong>5+</strong><span>Facebook groups a player posts the same LFG into, with no guarantee of being seen</span></div>
+    <div class="stat"><strong>3+</strong><span>Discord servers carrying the same post, where most of them get buried</span></div>
+    <div class="stat"><strong>0</strong><span>Central systems or audit trails for tournament incidents and rulings</span></div>
+  </div>
+
+  <h3>Players cannot be found</h3>
+  <p>A player blasts looking-for-group posts across five or more Facebook groups and three or more Discord servers, proves rank by screenshot and enrolment by ID photo, and waits weeks. Most posts are buried within hours. Talented players go undiscovered because visibility depends on who happened to be scrolling.</p>
+
+  <h3>Captains cannot trust what they see</h3>
+  <p>Team captains scroll through hundreds of unverified profiles. Rank screenshots are trivially edited, school enrolment is asserted rather than checked, and past tournament history lives in whoever's memory. Recruitment becomes a guess.</p>
+
+  <h3>Organizers cannot rule consistently</h3>
+  <p>Tournament organizers juggle incident reports arriving as screenshots, chat fragments, and verbal claims, with no central system and no audit trail. Rulings get overturned, officiators lose credibility, and brackets stall while a single dispute is reconstructed from thirty Discord messages.</p>
+
+  <div class="pull">
+    <p><strong>The result:</strong> wasted time, inconsistent rulings, and talented players going undiscovered. SEAL fixes this as the first all-in-one platform for PH collegiate esports.</p>
+  </div>
+
+  <div class="foot"><span>SEAL · Student Esports Athlete League</span><span>Team Hackatots · The Next Gen 2026</span></div>
+</section>
+
+<!-- 3. ARCHITECTURE -->
+<section class="page">
+  <p class="kicker">03 · Architecture, useable assets and tech stack</p>
+  <h2>How the tiers communicate</h2>
+  <div class="section-rule"></div>
+
+  <p>SEAL is a <strong>serverless-first web platform with one specialist service</strong>. Roughly ninety percent of the product is Next.js talking directly to Postgres. The two things that genuinely do not fit that shape, the team chemistry model and the live telemetry ingest, get their own Python service. The full diagram is on the next page.</p>
+
+  <div class="two-col" style="margin-bottom:18px">
+    <div class="tier"><h4>Frontend</h4><p>Next.js 15 App Router, React 19, TypeScript, Tailwind. React Server Components read Postgres on the server under the signed-in user's JWT, so no separate API layer is needed for reads. A Tauri desktop agent runs only inside a match window.</p></div>
+    <div class="tier"><h4>Backend</h4><p>Next.js route handlers deployed as Vercel serverless functions handle writes and orchestration. One FastAPI service on Python 3.12 owns the chemistry model and telemetry ingest, reached over REST with an internal token.</p></div>
+    <div class="tier"><h4>Database</h4><p>Supabase PostgreSQL 16 with Row Level Security as the authorization boundary, Supabase Auth gated on <code>.edu.ph</code> domains, Storage for evidence media, and Realtime pushing the incident queue over WebSocket.</p></div>
+    <div class="tier"><h4>External sources</h4><p>Scheduled adapters pull match history from op.gg, Tracker.gg, Dotabuff, and OpenDota. Discord is a contact handoff by deep link, never a data store.</p></div>
+  </div>
+
+  <h3>The two paths that matter</h3>
+  <table>
+    <tr><th style="width:30%">Path</th><th>How it flows</th></tr>
+    <tr><td>Read: scout search</td><td>Browser renders a React Server Component, which queries Postgres directly with the user's JWT. Row Level Security decides what that scout may see. No API round trip, no client-side filtering of private data.</td></tr>
+    <tr><td>Write: live incident</td><td>The Tauri agent posts a signed telemetry batch to FastAPI, which writes the incident to Postgres. Logical replication pushes it through Supabase Realtime to every subscribed officiator within seconds, not on the next poll.</td></tr>
+  </table>
+
+  <h3>Why this shape</h3>
+  <table>
+    <tr><th style="width:34%">Decision</th><th>Reason</th></tr>
+    <tr><td>Serverless Next.js as the default backend</td><td>One language across the app tier, one deploy, zero idle cost. A student team can ship it in a weekend.</td></tr>
+    <tr><td>A separate Python service</td><td>The chemistry model is numeric work on numpy, pandas, and scikit-learn. Serverless cold starts and short timeouts are wrong for it, and telemetry ingest is a long-lived write path.</td></tr>
+    <tr><td>Row Level Security as the boundary</td><td>Authorization lives in the database, not in UI checks. A bug in a React component cannot leak another player's private data.</td></tr>
+    <tr><td>Realtime instead of polling</td><td>The incident queue is the one screen where seconds matter.</td></tr>
+    <tr><td>Desktop agent, not a browser extension</td><td>Detecting a crash or a power interruption needs process and network visibility the browser sandbox does not grant.</td></tr>
+  </table>
+
+  <div class="foot"><span>SEAL · Student Esports Athlete League</span><span>Team Hackatots · The Next Gen 2026</span></div>
+</section>
+
+<!-- 4. TECH STACK -->
+<section class="page">
+  <p class="kicker">03 · Architecture, useable assets and tech stack</p>
+  <h2>Stack and useable assets</h2>
+  <div class="section-rule"></div>
+
+  <h3>Languages and frameworks</h3>
+  <table>
+    <tr><th style="width:22%">Layer</th><th style="width:26%">Choice</th><th>Chosen over, and why</th></tr>
+    <tr><td>Web framework</td><td>Next.js 15, App Router</td><td>Over Vite plus Express. Server Components let the database read happen on the server with the user's JWT.</td></tr>
+    <tr><td>UI library</td><td>React 19</td><td>Over Vue or Svelte. The team already ships React; a hackathon is the wrong place to learn a framework.</td></tr>
+    <tr><td>Language, web</td><td>TypeScript 5</td><td>Shared types in <code>domains/protocol</code> stop three developers disagreeing about a payload shape.</td></tr>
+    <tr><td>Styling</td><td>Tailwind CSS 4</td><td>Over CSS Modules. Speed, plus a token layer that survives handoff.</td></tr>
+    <tr><td>Components</td><td>shadcn/ui, extended</td><td>Over Material UI. Copy-in components the team owns and restyles.</td></tr>
+    <tr><td>Service tier</td><td>FastAPI 0.115</td><td>Over Flask or Django. Async by default, Pydantic validation, automatic OpenAPI.</td></tr>
+    <tr><td>Language, service</td><td>Python 3.12</td><td>numpy, pandas, and scikit-learn are the reason this service exists.</td></tr>
+    <tr><td>Desktop agent</td><td>Tauri 2</td><td>Over Electron. A 5MB binary instead of 150MB, with OS-level process visibility.</td></tr>
+    <tr><td>Charts</td><td>Recharts 2</td><td>Over Chart.js. React-native composition, themed from the same tokens.</td></tr>
+  </table>
+
+  <h3>Data platform and hosting</h3>
+  <table>
+    <tr><th style="width:22%">Concern</th><th style="width:26%">Choice</th><th>Reason</th></tr>
+    <tr><td>Database</td><td>Supabase PostgreSQL 16</td><td>Rosters, matches, incidents, and rulings are all relationships. Row Level Security makes the privacy model enforceable.</td></tr>
+    <tr><td>Auth</td><td>Supabase Auth</td><td>Email OTP with a <code>.edu.ph</code> allowlist, so school verification is handled at the auth layer.</td></tr>
+    <tr><td>File storage</td><td>Supabase Storage</td><td>Evidence screenshots and brackets, with signed URLs under the same policies.</td></tr>
+    <tr><td>Realtime</td><td>Supabase Realtime</td><td>Logical replication pushed to subscribed clients, so the incident queue updates without polling.</td></tr>
+    <tr><td>Hosting, web</td><td>Vercel</td><td>Zero-config Next.js deploys, preview URLs per branch, free tier sufficient for the build phase.</td></tr>
+  </table>
+
+  <div class="foot"><span>SEAL · Student Esports Athlete League</span><span>Team Hackatots · The Next Gen 2026</span></div>
+</section>
+
+<!-- 5. WIREFRAME INDEX -->
+<section class="page">
+  <p class="kicker">03 · Architecture, useable assets and tech stack</p>
+  <h2>Useable assets and the wireframe</h2>
+  <div class="section-rule"></div>
+
+  <h3>Useable assets already built</h3>
+  <ul>
+    <li><strong>A live, clickable prototype</strong> at <a href="https://seal-ph.vercel.app">seal-ph.vercel.app</a> covering five routes: overview, scout dashboard, player card, incident ruling workspace, and leaderboard.</li>
+    <li><strong>A typed data contract</strong> in <code>domains/protocol</code>. Every screen reads typed fixtures, so a Supabase query replaces the fixture import without touching a component.</li>
+    <li><strong>Five design artboards</strong> and a design system with a per-subject palette (arena black, SEAL orange, verified cyan), display and mono type, and the shared component primitives.</li>
+    <li><strong>Written architecture, specification, and tech stack documents</strong> in the public repository at <a href="https://github.com/Dawngend/seal">github.com/Dawngend/seal</a>.</li>
+    <li><strong>The team chemistry model</strong> specified as a weighted score across five inputs at 30 / 25 / 20 / 15 / 10.</li>
+  </ul>
+
+  <h3>Scope held back for the build phase</h3>
+  <p>Face verification and live op.gg auto-sync are deliberately out of the demo. Both depend on third parties, neither changes the pitch, and both are straightforward to add once the data contract is live.</p>
+
+  <p class="kicker" style="margin-top:22px">04 · UI wireframe</p>
+  <h3 style="margin-top:6px">Core feature layouts</h3>
+
+  <p>The pages that follow are the solution architecture diagram and then five screens captured from the running prototype, not mockups. Every control shown is either wired or visibly marked as inactive.</p>
+
+  <table>
+    <tr><th style="width:28%">Page</th><th style="width:26%">Screen</th><th>What it shows</th></tr>
+    <tr><td>Page 6</td><td>Solution architecture</td><td>The full frontend, backend, database, and external-source diagram, with every wire labelled by protocol.</td></tr>
+    <tr><td>Page 7</td><td>Overview</td><td>The operating view: four surfaces, live counts, and the build-phase status of each.</td></tr>
+    <tr><td>Page 8</td><td>Scout Dashboard</td><td><strong>The core feature.</strong> Filter by game, role, rank band, school, and availability; results update live, with a compare tray and an empty state with reset.</td></tr>
+    <tr><td>Page 9</td><td>Player Card</td><td>Verified identity, overall rating, the five stat bars, agent pool, career stats, and the Discord contact handoff.</td></tr>
+    <tr><td>Page 10</td><td>Incident Ruling Workspace</td><td>The live incident queue, evidence timeline, the applicable rule in front of the officiator, and the outcome options that produce the audit record.</td></tr>
+    <tr><td>Page 11</td><td>Leaderboard</td><td>Public standings by school, game, and role, the surface that makes discovery work in the other direction.</td></tr>
+  </table>
+
+  <h3>How to read the prototype</h3>
+  <p>Every screen runs on seeded fixture data, marked by the banner across the top, and is reachable at <a href="https://seal-ph.vercel.app">seal-ph.vercel.app</a>. Navigation items greyed with a padlock are planned for the build phase on September 18 and are shown inactive rather than faked.</p>
+
+  <div class="foot"><span>SEAL · Student Esports Athlete League</span><span>Team Hackatots · The Next Gen 2026</span></div>
+</section>
+
+</body>
+</html>
